@@ -2,7 +2,7 @@ image: node:latest
 
 stages:
   - build
-  - run
+  - test
 
 build:       # This job runs in the build stage, which runs first.
     stage: build
@@ -11,14 +11,14 @@ build:       # This job runs in the build stage, which runs first.
         - echo "Installing dependancies"
         - npm install
         - echo "Installation complete"
+        - npm run build
+        - echo "build successful"
     artifacts:
         paths:
             - ./Product microservice/node_modules
         
 
-run:
-    stage: run
+test:
+    stage: test
     script: 
-        - cd ./'Product microservice'
-        - npm start
-        - echo "Running ..."
+        - echo "Test placeholder "
