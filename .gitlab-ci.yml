@@ -18,7 +18,7 @@ build:       # This job runs in the build stage, which runs first.
 
 run:
     stage: run
-    scripts: 
+    script: 
         - cd ./'Product microservice'
         - npm start
         - echo "Running ..."
