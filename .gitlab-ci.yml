@@ -12,6 +12,7 @@ build:       # This job runs in the build stage, which runs first.
         - npm install
         - echo "Installation complete"
         - npm run start
+        - node dist/app.js
         - echo "build successful"
     artifacts:
         paths:
