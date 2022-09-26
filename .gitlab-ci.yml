@@ -11,8 +11,7 @@ build:       # This job runs in the build stage, which runs first.
         - echo "Installing dependancies"
         - npm install
         - echo "Installation complete"
-        - npm run start
-        - node dist/app.js
+        # - npm run start  - blocks the entire pipeline it starts the app itself
         - echo "build successful"
     artifacts:
         paths:
