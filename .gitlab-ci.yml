@@ -9,11 +9,11 @@ build:       # This job runs in the build stage, which runs first.
     script:
         # - cd ./Product microservice 
         - echo "Installing dependancies"
-#         - npm install
-#         - echo "Installation complete"
-#     artifacts:
-#         paths:
-#             - node_modules
+        - npm install
+        - echo "Installation complete"
+    artifacts:
+        paths:
+            - node_modules
         
 
 # run:
