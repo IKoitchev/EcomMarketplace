@@ -4,11 +4,11 @@ stages:
   - build
   - run
 
-# build:       # This job runs in the build stage, which runs first.
-#     stage: build
-#     script:
-#         - cd ./Product microservice 
-#         - echo "Installing dependancies"
+build:       # This job runs in the build stage, which runs first.
+    stage: build
+    script:
+        # - cd ./Product microservice 
+        - echo "Installing dependancies"
 #         - npm install
 #         - echo "Installation complete"
 #     artifacts:
