@@ -4,21 +4,20 @@ stages:
   - build
   - test
 
-build:       # This job runs in the build stage, which runs first.
-    stage: build
-    script:
-        - cd ./'Product microservice' 
-        - echo "Installing dependancies"
-        - npm install
-        - echo "Installation complete"
-        # - npm run start  - blocks the entire pipeline it starts the app itself
-        - echo "build successful"
-    artifacts:
-        paths:
-            - ./Product microservice/node_modules
-        
+build: # This job runs in the build stage, which runs first.
+  stage: build
+  script:
+    - cd ./'Product microservice'
+    - echo "Installing dependancies"
+    - npm install
+    - echo "Installation complete"
+    - npm tsc
+    - echo "build successful"
+  artifacts:
+    paths:
+      - ./Product microservice/node_modules
 
 test:
-    stage: test
-    script: 
-        - echo "Test placeholder "
+  stage: test
+  script:
+    - echo "Test placeholder "
