@@ -1,5 +1,4 @@
 import 'bootstrap/dist/css/bootstrap.min.css';
-import { type } from 'os';
 import {
   Button,
   Form,
@@ -8,22 +7,28 @@ import {
   Navbar,
   NavDropdown,
 } from 'react-bootstrap';
-import { useNavigate } from 'react-router-dom';
+import LoginButton from '../../service/auth/LoginButton';
+import { useAuth0 } from '@auth0/auth0-react';
+import LogoutButton from '../../service/auth/LogoutButton';
 
 function NavBar() {
-  const navigate = useNavigate();
+  const { user, isAuthenticated, isLoading } = useAuth0();
+  //const navigate = useNavigate();
   function handleSearch() {
     const searchBox = document.getElementById('searchbox') as HTMLInputElement;
     const value = searchBox?.value;
 
-    if (value != null) {
-      navigate('/products', { state: { searchedValue: value } });
-    }
+    // if (value != null) {
+    //   navigate('/products', { state: { searchedValue: value } });
+    // }
   }
+  // function handleLogin() {
+  //   redirect()
+  // }
   return (
     <Navbar bg="success" expand="lg">
       <Container>
-        <Navbar.Brand href="/home">Ecom</Navbar.Brand>
+        <Navbar.Brand href="/home">Ecom {user?.name}</Navbar.Brand>
         <Navbar.Toggle aria-controls="basic-navbar-nav" />
         <Navbar.Collapse id="basic-navbar-nav">
           <Nav className="me-auto">
@@ -51,6 +56,8 @@ function NavBar() {
             />
             <Button variant="outline-white">Search</Button>
           </Form>
+          {/* <Nav.Link href="/login" onClick={handleLogin}>Login</Nav.Link> */}
+          {isAuthenticated ? <LogoutButton /> : <LoginButton />}
         </Navbar.Collapse>
       </Container>
     </Navbar>
