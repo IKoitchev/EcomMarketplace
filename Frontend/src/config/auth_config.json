@@ -1,5 +1,5 @@
 {
   "domain": "dev-a7jprgzu.us.auth0.com",
   "clientId": "XB6H5oLP2XZRbpt3sRmFI9unRQhwO7wL",
-  "audience": "localhost:3009/auth"
+  "audience": "https://auth-service"
 }

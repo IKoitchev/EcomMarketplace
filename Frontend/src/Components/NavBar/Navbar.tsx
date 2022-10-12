@@ -10,21 +10,35 @@ import {
 import LoginButton from '../../service/auth/LoginButton';
 import { useAuth0 } from '@auth0/auth0-react';
 import LogoutButton from '../../service/auth/LogoutButton';
+import axios from 'axios';
+import axiosClient from '../../utils/axiosClient';
 
 function NavBar() {
-  const { user, isAuthenticated, isLoading } = useAuth0();
-  //const navigate = useNavigate();
-  function handleSearch() {
-    const searchBox = document.getElementById('searchbox') as HTMLInputElement;
-    const value = searchBox?.value;
+  const { user, isAuthenticated, getAccessTokenSilently } = useAuth0();
+  async function handleSearch() {
+    // const searchBox = document.getElementById('searchbox') as HTMLInputElement;
+    // const value = searchBox?.value;
+    try {
+      const token = await getAccessTokenSilently();
 
-    // if (value != null) {
-    //   navigate('/products', { state: { searchedValue: value } });
-    // }
+      const response = await axiosClient.get(`http://localhost:3009/test`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      // const response = await axios.get(`http://localhost:3009/test`, {
+      //   headers: {
+      //     Authorization: `Bearer ${token}`,
+      //   },
+      // });
+
+      const responseData = await response.data;
+      console.log(response);
+    } catch (error) {
+      console.log(error);
+    }
   }
-  // function handleLogin() {
-  //   redirect()
-  // }
   return (
     <Navbar bg="success" expand="lg">
       <Container>
@@ -54,7 +68,9 @@ function NavBar() {
               aria-label="Search"
               id="searchbox"
             />
-            <Button variant="outline-white">Search</Button>
+            <Button variant="outline-white" onClick={handleSearch}>
+              Search
+            </Button>
           </Form>
           {/* <Nav.Link href="/login" onClick={handleLogin}>Login</Nav.Link> */}
           {isAuthenticated ? <LogoutButton /> : <LoginButton />}
@@ -63,5 +79,4 @@ function NavBar() {
     </Navbar>
   );
 }
-
 export default NavBar;
