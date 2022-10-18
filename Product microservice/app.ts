@@ -3,6 +3,7 @@ import config from 'config';
 import connect from './utils/db.connect';
 import logger from './utils/logger';
 import productRoutes from './routes/product.routes';
+import { testRabbitMQ } from './utils/rabbitmq';
 
 const app = express();
 

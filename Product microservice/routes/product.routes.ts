@@ -5,6 +5,7 @@ import {
   getAllProductsHandler,
   updateProductHandler,
 } from '../controllers/product.controller';
+import { checkJwt } from '../middleware/checkjwt';
 import validate from '../middleware/validate.resource';
 import { createProductSchema } from '../schema/product.schema';
 
@@ -14,11 +15,19 @@ function productRoutes(app: Express) {
   });
   app.get('/products', getAllProductsHandler);
 
-  app.post('/products', validate(createProductSchema), createProductHandler);
+  app.post(
+    '/products',
+    [checkJwt, validate(createProductSchema)],
+    createProductHandler
+  );
 
-  app.put('/products', validate(createProductSchema), updateProductHandler);
+  app.put(
+    '/products',
+    [checkJwt, validate(createProductSchema)],
+    updateProductHandler
+  );
 
-  app.delete('/products', deleteProductHandler);
+  app.delete('/products', checkJwt, deleteProductHandler);
 }
 
 export default productRoutes;

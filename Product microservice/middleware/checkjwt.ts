@@ -1,6 +1,5 @@
 import { expressjwt, GetVerificationKey } from 'express-jwt';
 import jwksRsa from 'jwks-rsa';
-
 const authConfig = require('../config/auth_config.json');
 
 export const checkJwt = expressjwt({
