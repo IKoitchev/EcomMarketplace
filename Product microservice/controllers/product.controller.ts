@@ -4,6 +4,7 @@ import {
   createProduct,
   deleteProduct,
   getAllProducts,
+  getProductsByNames,
   updateProduct,
 } from '../service/product.service';
 import logger from '../utils/logger';
@@ -43,6 +44,15 @@ export async function deleteProductHandler(req: Request, res: Response) {
       return res.status(400).send('Error deleting product');
     }
     return res.status(200).send('Product deleted successfully');
+  } catch (e: any) {
+    throw new Error(e);
+  }
+}
+export async function getProductsByNamesHandler(req: Request, res: Response) {
+  try {
+    console.log(req.body);
+    const products = await getProductsByNames(req.body);
+    return res.status(200).send(products);
   } catch (e: any) {
     throw new Error(e);
   }

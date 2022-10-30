@@ -18,26 +18,6 @@ function NavBar() {
   async function handleSearch() {
     // const searchBox = document.getElementById('searchbox') as HTMLInputElement;
     // const value = searchBox?.value;
-    try {
-      const token = await getAccessTokenSilently();
-
-      const response = await axiosClient.get(`http://localhost:3009/test`, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
-
-      // const response = await axios.get(`http://localhost:3009/test`, {
-      //   headers: {
-      //     Authorization: `Bearer ${token}`,
-      //   },
-      // });
-
-      const responseData = await response.data;
-      console.log(response);
-    } catch (error) {
-      console.log(error);
-    }
   }
   return (
     <Navbar bg="success" expand="lg">

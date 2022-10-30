@@ -40,3 +40,10 @@ export async function deleteProduct(productId: string) {
     throw new Error(e);
   }
 }
+export async function getProductsByNames(names: string[]) {
+  try {
+    return await ProductModel.find({ name: names });
+  } catch (e: any) {
+    console.log(e.message);
+  }
+}
