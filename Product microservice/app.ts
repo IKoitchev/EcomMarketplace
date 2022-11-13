@@ -6,12 +6,24 @@ import productRoutes from './routes/product.routes';
 import RabbitMQChannel, { testRabbitMQ } from './utils/rabbitmq';
 import cors from 'cors';
 import { Channel, Connection, ConsumeMessage } from 'amqplib';
-import { getProductsByNames } from './service/product.service';
+import { ProductService } from './service/product.service';
+import swaggerUi from 'swagger-ui-express';
 
 const port = config.get<number>('port');
 const app = express();
+
 app.use(cors({ origin: 'http://localhost:3000' }));
 app.use(express.json());
+app.use(express.static('public'));
+app.use(
+  '/docs',
+  swaggerUi.serve,
+  swaggerUi.setup(undefined, {
+    swaggerOptions: {
+      url: '/swagger.json',
+    },
+  })
+);
 
 let channel: Channel;
 const queue = 'shopping-cart-products'; // to be moved to config?
@@ -26,7 +38,8 @@ async function ConnectRabbitMQ() {
       const content = msg?.content.toString();
       console.log('content:');
       console.log(content);
-      const products = await getProductsByNames(content.split('-'));
+      const ps = new ProductService();
+      const products = await ps.getProductsByNames(content.split('-'));
       console.log(products);
       channel.sendToQueue(
         msg?.properties.replyTo,

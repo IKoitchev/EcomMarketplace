@@ -1,6 +1,10 @@
 import { expressjwt, GetVerificationKey } from 'express-jwt';
 import jwksRsa from 'jwks-rsa';
-const authConfig = require('../config/auth_config.json');
+// const authConfig = require('../config/auth_config.json');
+const authConfig = {
+  domain: 'https://dev-a7jprgzu.us.auth0.com/',
+  audience: 'https://auth-service',
+};
 
 export const checkJwt = expressjwt({
   secret: jwksRsa.expressJwtSecret({

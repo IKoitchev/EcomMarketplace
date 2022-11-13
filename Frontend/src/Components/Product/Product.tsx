@@ -14,6 +14,7 @@ const Product: React.FC<ProductProps> = ({ product }) => {
           style={{ maxHeight: '17rem' }}
           variant="top"
           src={product.image}
+          alt="Product image not found"
         />
         <Card.Body>
           <Card.Title>{product.title}</Card.Title>

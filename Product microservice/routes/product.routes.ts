@@ -1,12 +1,19 @@
 import { Express, Request, Response } from 'express';
 require('dotenv').config;
 
+// import {
+//   createProductHandler,
+//   deleteProductHandler,
+//   getAllProductsHandler,
+//   getProductsByNamesHandler,
+//   updateProductHandler,
+// } from '../controllers/product.controller';
 import {
-  createProductHandler,
-  deleteProductHandler,
   getAllProductsHandler,
-  getProductsByNamesHandler,
+  createProductHandler,
   updateProductHandler,
+  deleteProductHandler,
+  getProductsByNamesHandler,
 } from '../controllers/product.controller';
 import { checkJwt } from '../middleware/checkjwt';
 import validate from '../middleware/validate.resource';
@@ -32,7 +39,7 @@ function productRoutes(app: Express) {
 
   app.delete('/products', checkJwt, deleteProductHandler);
 
-  app.get('/byNames', getProductsByNamesHandler); //endpoint is for testing
+  app.get('/products/byNames', getProductsByNamesHandler); //endpoint is for testing
 }
 
 export default productRoutes;
