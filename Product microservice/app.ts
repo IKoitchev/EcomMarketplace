@@ -8,6 +8,8 @@ import cors from 'cors';
 import { Channel, Connection, ConsumeMessage } from 'amqplib';
 import { ProductService } from './service/product.service';
 import swaggerUi from 'swagger-ui-express';
+import { init } from './utils/coinbase';
+import PayRoute from './routes/payRoute';
 
 const port = config.get<number>('port');
 const app = express();
@@ -59,5 +61,7 @@ ConnectRabbitMQ();
 app.listen(port, async () => {
   logger.info(`App is running at http://localhost:${port}`);
   await connect();
+  await init();
   productRoutes(app);
+  PayRoute(app);
 });

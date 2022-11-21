@@ -49,7 +49,7 @@ export class ProductService {
     }
   }
 
-  public async getProductsByNames(@Body() names: string[]) {
+  public async getProductsByNames(names: string[]) {
     try {
       return await ProductModel.find({ name: names });
     } catch (e: any) {
