@@ -1,13 +1,4 @@
 import { Express, Request, Response } from 'express';
-require('dotenv').config;
-
-// import {
-//   createProductHandler,
-//   deleteProductHandler,
-//   getAllProductsHandler,
-//   getProductsByNamesHandler,
-//   updateProductHandler,
-// } from '../controllers/product.controller';
 import {
   getAllProductsHandler,
   createProductHandler,
@@ -16,7 +7,7 @@ import {
   getProductsByNamesHandler,
 } from '../controllers/product.controller';
 import { checkJwt } from '../middleware/checkjwt';
-import validate from '../middleware/validate.resource';
+import validate from '../middleware/validate.product';
 import { createProductSchema } from '../schema/product.schema';
 
 function productRoutes(app: Express) {
@@ -27,7 +18,7 @@ function productRoutes(app: Express) {
 
   app.post(
     '/products',
-    [checkJwt, validate(createProductSchema)],
+    [checkJwt, validate(createProductSchema)], //checkjwt
     createProductHandler
   );
 

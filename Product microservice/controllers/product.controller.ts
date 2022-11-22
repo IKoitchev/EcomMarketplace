@@ -1,6 +1,4 @@
-import { get } from 'config';
 import { Request, Response } from 'express';
-import { Route, Get } from 'tsoa';
 
 import { ProductService } from '../service/product.service';
 import logger from '../utils/logger';

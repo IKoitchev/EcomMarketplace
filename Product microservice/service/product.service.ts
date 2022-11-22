@@ -1,4 +1,3 @@
-import { Router } from 'express';
 import { DocumentDefinition } from 'mongoose';
 import ProductModel, { ProductDocument } from '../models/product.model';
 import { Route, Get, Put, Post, Delete, Body, Path, Tags } from 'tsoa';

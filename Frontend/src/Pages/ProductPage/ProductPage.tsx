@@ -12,13 +12,14 @@ type IProductPageProps = {
 const ProductPage: React.FC<IProductPageProps> = ({ searchedValue }) => {
   const [products, setProducts] = useState<Array<IProduct>>();
   useEffect(() => {
-    ProductService.getAll().then((response: any) => {
-      setProducts(response.data);
-    });
+    ProductService.getAll()
+      .then((response: any) => {
+        setProducts(response.data);
+      })
+      .catch((err: any) => {
+        console.log(err);
+      });
   }, []);
-  useEffect(() => {
-    console.log(products);
-  }, [products]);
 
   return (
     <>
@@ -29,8 +30,9 @@ const ProductPage: React.FC<IProductPageProps> = ({ searchedValue }) => {
         <>no products</>
       ) : (
         <Row xs={5} md={3}>
-          {products.map((p: IProduct) => {
-            return <Product product={p} />;
+          {products.map((p: IProduct, k: number) => {
+            // key should be changed to the products Id
+            return <Product key={k} product={p} />;
           })}
         </Row>
       )}

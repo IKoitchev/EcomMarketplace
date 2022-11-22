@@ -6,10 +6,11 @@ admin:
 apiEndpoints:
   api:
     host: localhost
-    paths: ['/ip', '/products']
+    paths: ['/images*', '/products']
 serviceEndpoints:
   products:
-    url: 'product-service://ps:3008'
+    # url: 'product-service://ps:3008' # from inside the docker-compose
+    url: 'http://localhost:3008' # when ran from vs code
 policies:
   - basic-auth
   - cors

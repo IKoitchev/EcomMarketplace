@@ -8,6 +8,9 @@ import cors from 'cors';
 import { Channel, Connection, ConsumeMessage } from 'amqplib';
 import { ProductService } from './service/product.service';
 import swaggerUi from 'swagger-ui-express';
+import morgan from 'morgan';
+import fileUpload from 'express-fileupload';
+import ImageRoutes from './routes/image.routes';
 
 const port = config.get<number>('port');
 const app = express();
@@ -15,6 +18,7 @@ const app = express();
 app.use(cors({ origin: 'http://localhost:3000' }));
 app.use(express.json());
 app.use(express.static('public'));
+app.use(morgan('dev'));
 app.use(
   '/docs',
   swaggerUi.serve,
@@ -22,6 +26,11 @@ app.use(
     swaggerOptions: {
       url: '/swagger.json',
     },
+  })
+);
+app.use(
+  fileUpload({
+    createParentPath: true,
   })
 );
 
@@ -60,4 +69,5 @@ app.listen(port, async () => {
   logger.info(`App is running at http://localhost:${port}`);
   await connect();
   productRoutes(app);
+  ImageRoutes(app);
 });

@@ -38,12 +38,20 @@
 					"price": {
 						"type": "number",
 						"format": "double"
+					},
+					"image": {
+						"type": "string"
+					},
+					"author": {
+						"type": "string"
 					}
 				},
 				"required": [
 					"description",
 					"name",
-					"price"
+					"price",
+					"image",
+					"author"
 				],
 				"type": "object"
 			},

@@ -1,9 +1,10 @@
 import ReactDOM from 'react-dom/client';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
-import { Auth0Provider } from '@auth0/auth0-react';
+import { Auth0Provider, Auth0ProviderOptions } from '@auth0/auth0-react';
 import history from './utils/history';
 import { getConfig } from './config/config';
+import NavBar from './Components/NavBar/Navbar';
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
@@ -14,11 +15,14 @@ const onRedirectCallback = (appState: any) => {
   );
 };
 const config = getConfig();
-const providerConfig = {
+
+const providerConfig: Auth0ProviderOptions = {
   domain: config.domain,
   clientId: config.clientId,
   ...(config.audience ? { audience: config.audience } : null),
   redirectUri: window.location.origin,
+  useRefreshTokens: true,
+  cacheLocation: 'localstorage',
   onRedirectCallback,
 };
 root.render(
