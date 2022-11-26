@@ -4,13 +4,19 @@ admin:
   port: 9876
   host: localhost
 apiEndpoints:
-  api:
+  products:
     host: localhost
-    paths: ['/images*', '/products']
+    paths: ['/products']
+  images:
+    host: localhost
+    paths: ['/images**']
 serviceEndpoints:
   products:
     # url: 'product-service://ps:3008' # from inside the docker-compose
     url: 'http://localhost:3008' # when ran from vs code
+  images:
+    url: 'http://localhost:3010'
+
 policies:
   - basic-auth
   - cors
@@ -21,13 +27,21 @@ policies:
   - proxy
   - rate-limit
 pipelines:
-  default:
+  products:
     apiEndpoints:
-      - api
+      - products
     policies:
       # Uncomment `key-auth:` when instructed to in the Getting Started guide.
       # - key-auth:
       - proxy:
           - action:
               serviceEndpoint: products
+              changeOrigin: true
+  images:
+    apiEndpoints:
+      - images
+    policies:
+      - proxy:
+          - action:
+              serviceEndpoint: images
               changeOrigin: true

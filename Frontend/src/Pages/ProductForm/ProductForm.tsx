@@ -81,7 +81,6 @@ const ProductForm: React.FC<{ product: IProduct | undefined }> = ({
       console.log(product);
       getAccessTokenSilently({
         audience: 'https://auth-service',
-        permissions: 'create:product',
       })
         .then((res) => {
           const token = res;

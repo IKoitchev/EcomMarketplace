@@ -37,7 +37,7 @@ export async function updateProductHandler(req: Request, res: Response) {
 export async function deleteProductHandler(req: Request, res: Response) {
   try {
     const ps = new ProductService();
-    const result = await ps.deleteProduct(req.body._id);
+    const result = await ps.deleteProduct(req.params.productId);
     if (result.deletedCount === 0) {
       return res.status(400).send('Error deleting product');
     }

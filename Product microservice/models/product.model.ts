@@ -14,7 +14,7 @@ const ProductSchema: Schema = new Schema(
     description: { type: String, required: true },
     price: { type: Number, required: true },
     image: { type: String, required: true },
-    authro: { type: String, required: false },
+    author: { type: String, required: false },
   },
   { timestamps: true }
 );

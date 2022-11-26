@@ -1,6 +1,5 @@
 import { NextFunction, Request, Response } from 'express';
 import fileUpload from 'express-fileupload';
-import { P } from 'pino';
 import log from '../utils/logger';
 
 export const validateImage = (

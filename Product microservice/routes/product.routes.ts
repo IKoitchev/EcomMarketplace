@@ -6,7 +6,7 @@ import {
   deleteProductHandler,
   getProductsByNamesHandler,
 } from '../controllers/product.controller';
-import { checkJwt } from '../middleware/checkjwt';
+import { checkJwt, checkScopes } from '../middleware/checkjwt';
 import validate from '../middleware/validate.product';
 import { createProductSchema } from '../schema/product.schema';
 
@@ -18,17 +18,29 @@ function productRoutes(app: Express) {
 
   app.post(
     '/products',
-    [checkJwt, validate(createProductSchema)], //checkjwt
+    [checkJwt, checkScopes(['create:product']), validate(createProductSchema)],
     createProductHandler
   );
 
   app.put(
     '/products',
-    [checkJwt, validate(createProductSchema)],
+    [
+      checkJwt,
+      checkScopes(['update:current_user_product']),
+      validate(createProductSchema),
+    ],
     updateProductHandler
   );
 
-  app.delete('/products', checkJwt, deleteProductHandler);
+  //this deletes only if user is admin
+  //good to have: check if the user id in the jwt is the same as the one of the author
+  //maybe make unique user names and get user id by name from the management API
+  //can be done when/if/instead of checkScopes middleware returning error
+  app.delete(
+    '/products/:productId',
+    [checkJwt, checkScopes(['delete:any_product'])],
+    deleteProductHandler
+  );
 
   app.get('/products/byNames', getProductsByNamesHandler); //endpoint is for testing
 }
