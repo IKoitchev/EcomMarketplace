@@ -4,7 +4,7 @@ import connect from './src/utils/db.connect';
 import logger from './src/utils/logger';
 import { RabbitMQChannel } from './src/utils/rabbitmq';
 require('dotenv').config();
-import shoppingCartRoutes from './src/routes/shoppingCart';
+import shoppingCartRoutes from './src/routes/shoppingCartRoutes';
 
 const app = express();
 

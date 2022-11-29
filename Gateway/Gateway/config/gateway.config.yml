@@ -12,11 +12,16 @@ apiEndpoints:
     paths: ['/images**']
 serviceEndpoints:
   products:
-    # url: 'product-service://ps:3008' # from inside the docker-compose
-    url: 'http://localhost:3008' # when ran from vs code
+    url: 'product-service://ps:3008' # from inside the docker-compose
+    # url: 'http://localhost:3008' # when ran from vs code
   images:
-    url: 'http://localhost:3010'
-
+    url:
+      'image-service://imgs:3010' # from inside the docker-compose
+      # url: 'http://localhost:3010' # when ran from vs code
+  shopping-cart:
+    url:
+      'shopping-cart://cart:3009' # from inside the docker-compose
+      # url: 'http://localhost:3009' # when ran from vs code
 policies:
   - basic-auth
   - cors

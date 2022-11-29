@@ -42,15 +42,15 @@ async function ConnectRabbitMQ() {
   await channel.assertQueue(requestQ);
 
   channel.consume(requestQ, async (msg) => {
-    log.info('consume');
+    // log.info('consume');
     if (msg) {
       const content = msg?.content.toString();
-      log.info('content:');
-      log.info(content);
+      // log.info('content:');
+      // log.info(content);
       const ps = new ProductService();
       const products = await ps.getProductsByNames(content.split('---')); //change to ---
-      log.info(products);
-      log.info(msg?.properties);
+      // log.info(products);
+      // log.info(msg?.properties);
       channel.sendToQueue(
         msg?.properties.replyTo,
         Buffer.from(products?.toString() || ' '),
@@ -59,7 +59,7 @@ async function ConnectRabbitMQ() {
         }
       );
     } else {
-      log.error('no message');
+      // log.error('no message');
     }
   });
 }

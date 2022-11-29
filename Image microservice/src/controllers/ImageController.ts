@@ -18,7 +18,9 @@ export async function UploadImageHandler(req: Request, res: Response) {
 
 export async function GetImageHandler(req: Request, res: Response) {
   try {
-    res.status(200).sendFile(path.resolve(`./public/images/${req.params._id}`));
+    res
+      .status(200)
+      .sendFile(path.resolve(`./public/images/${req.params.name}`));
   } catch (err: any) {
     log.error(err);
   }

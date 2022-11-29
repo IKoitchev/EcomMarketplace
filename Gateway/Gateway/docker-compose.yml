@@ -1,0 +1,24 @@
+version: "3.7"
+services:
+  gateway:
+    image: express-gateway
+    ports: 
+      - "8080:8080"
+      - "9876:9876"
+    links:
+      - "productService:ps"
+      - "shopingCart:cart"
+      - "imageService:imgs"
+  productService:
+    image: product-service
+    ports:
+      - "3008:3008"
+  shopingCart:
+    image: shopping-cart
+    ports:
+      - "3009:3009"
+  imageService:
+    image: image-service
+    ports:
+      - "3010:3010"
+      

@@ -1,6 +1,6 @@
 import { Guid } from 'js-guid';
-import { DocumentDefinition } from 'mongoose';
-import CartModel, { CartDocument } from '../models/cartModel';
+import { DocumentDefinition, Mongoose } from 'mongoose';
+import OrderModel, { OrderDocument } from '../models/order';
 import log from '../utils/logger';
 import { RabbitMQChannel } from '../utils/rabbitmq';
 
@@ -12,13 +12,18 @@ function getGuid(): string {
   log.info(id);
   return id;
 }
-export async function addToCart(input: DocumentDefinition<CartDocument>) {
-  // try {
-  //   const cart = await CartModel.(input);
-  //   return cart.toJSON();
-  // } catch (e: any) {
-  //   throw new Error(e);
-  // }
+export async function addToCart(input: DocumentDefinition<OrderDocument>) {
+  try {
+    const res = await OrderModel.updateOne(
+      { userId: input.userId, isFinished: false },
+      { $set: { productList: input.productList } },
+      { upsert: true }
+    );
+    log.info(res);
+    return res;
+  } catch (e: any) {
+    throw new Error(e);
+  }
 }
 
 export async function getCartProducts(input: string[]) {

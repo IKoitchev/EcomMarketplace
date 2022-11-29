@@ -1,0 +1,19 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: product-service-k8s
+spec:
+  selector:
+    matchLabels:
+      app: product-service-k8s
+  replicas: 2
+  template:
+    metadata:
+      labels:
+        app: product-service-k8s
+    spec:
+      containers:
+        - name: product-service-k8s
+          image: ikoitchev/product-service-k8s
+          ports:
+            - containerPort: 3008
