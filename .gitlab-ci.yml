@@ -3,8 +3,9 @@ image: node:latest
 stages:
   - build
   - test
+  - deploy
 
-build: # This job runs in the build stage, which runs first.
+build: 
   stage: build
   script:
     - cd ./'Product microservice'
@@ -21,3 +22,11 @@ test:
   stage: test
   script:
     - echo "Test placeholder "
+
+deploy:
+  stage: deploy
+  script:
+    - docker build . -t ikoitchev/product-service-k8s
+    # - docker push ikoitchev/product-service-k8s
+    # - kubectl create -f .\k8s\deployment.yaml
+    - kubectl get pods
