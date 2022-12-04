@@ -29,7 +29,7 @@ deploy:
     - cd ./'Product microservice'
     - pwd
     - docker build . -t ikoitchev/product-service-k8s
-    - docker login
+    - docker login -u ikoitchev -p dckr_pat_U6BHri9aLrhmLToNqVn7oMvKY3Q
     - docker push ikoitchev/product-service-k8s
     # - kubectl create -f .\k8s\deployment.yaml
     # - kubectl get pods
