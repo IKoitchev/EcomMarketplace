@@ -36,4 +36,4 @@ deploy:
     # - kubectl get pods
     - gcloud container clusters get-credentials ecom-cluster --region europe-west4 --project burnished-ember-369914
     # - kubectl create -f .\k8s\deployment.yaml
-    # - kubectl get namespaces
+    - kubectl get namespaces
