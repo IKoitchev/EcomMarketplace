@@ -31,5 +31,8 @@ deploy:
     - docker build . -t ikoitchev/product-service-k8s
     - docker login -u ikoitchev -p dckr_pat_U6BHri9aLrhmLToNqVn7oMvKY3Q
     - docker push ikoitchev/product-service-k8s
+    - kubectl config get-contexts
+    - kubectl config use-context .gitlab/agents/agent:agent
+    - kubectl get pods
     # - kubectl create -f .\k8s\deployment.yaml
     - kubectl get namespaces
