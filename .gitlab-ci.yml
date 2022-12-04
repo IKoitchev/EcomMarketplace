@@ -2,7 +2,7 @@ image: node:latest
 
 stages:
   - build
-  - test
+  # - test
   - deploy
 
 build: 
@@ -18,10 +18,10 @@ build:
     paths:
       - ./Product microservice/node_modules
 
-test:
-  stage: test
-  script:
-    - echo "Test placeholder "
+# test:
+#   stage: test
+#   script:
+#     - echo "Test placeholder "
 
 deploy:
   stage: deploy
@@ -34,5 +34,6 @@ deploy:
     - kubectl config get-contexts
     - kubectl config use-context I432549/s-a-rb03-individual:agent
     # - kubectl get pods
+    - gcloud container clusters get-credentials ecom-cluster --region europe-west4 --project burnished-ember-369914
     # - kubectl create -f .\k8s\deployment.yaml
     # - kubectl get namespaces
