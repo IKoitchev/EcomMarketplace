@@ -26,6 +26,7 @@ test:
 deploy:
   stage: deploy
   script:
+    - cd ./'Product microservice'
     - pwd
     - docker build . -t ikoitchev/product-service-k8s
     # - docker push ikoitchev/product-service-k8s
