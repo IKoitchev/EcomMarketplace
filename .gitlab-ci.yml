@@ -22,7 +22,6 @@ stages:
 #     - echo "Test placeholder "
 
 deploy:
-  image: google/cloud-sdk
   stage: deploy
   script:
     - cd ./'Product microservice'
@@ -30,4 +29,7 @@ deploy:
     - docker build . -t ikoitchev/product-service-k8s
     - docker login -u ikoitchev -p dckr_pat_U6BHri9aLrhmLToNqVn7oMvKY3Q
     - docker push ikoitchev/product-service-k8s
-    - glcoud --help
+    - docker pull google/cloud-sdk:latest
+    - docker run -ti  google/cloud-sdk:latest gcloud version
+    - docker run -ti --name gcloud-config google/cloud-sdk gcloud auth login
+    # - glcoud --help
