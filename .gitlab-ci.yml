@@ -1,4 +1,4 @@
-image: node:latest
+
 
 stages:
   - build
@@ -6,6 +6,7 @@ stages:
   - deploy
 
 build: 
+  image: node:latest
   stage: build
   script:
     - cd ./'Product microservice'
@@ -24,6 +25,7 @@ build:
 #     - echo "Test placeholder "
 deploy:
   stage: deploy
+  image: google/cloud-sdk:alpine
   script:
     - cd ./'Product microservice'
     - pwd
