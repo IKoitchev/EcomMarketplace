@@ -1,4 +1,3 @@
-
 stages:
   - build
   # - test
@@ -27,8 +26,10 @@ deploy:
   image: google/cloud-sdk:alpine
   script:
     - cd ./'Product microservice'
-    - pwd
-    - docker build . -t ikoitchev/product-service-k8s
     - docker login -u ikoitchev -p dckr_pat_U6BHri9aLrhmLToNqVn7oMvKY3Q
+    - echo "logged in"
+    - docker build . -t ikoitchev/product-service-k8s
+    - echo "built"
     - docker push ikoitchev/product-service-k8s
+    - echo "pushed"
     - glcoud --help
