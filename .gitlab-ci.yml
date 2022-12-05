@@ -31,4 +31,5 @@ deploy:
     - docker push ikoitchev/product-service-k8s
     - docker pull google/cloud-sdk:latest
     - docker run google/cloud-sdk:latest gcloud version
+    - docker run --name gcloud-config google/cloud-sdk gcloud auth login
     - glcoud --help
