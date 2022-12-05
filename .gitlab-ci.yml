@@ -1,20 +1,20 @@
 stages:
-  - build
+  # - build
   # - test
   - deploy
 
-build: 
-  stage: build
-  script:
-    - cd ./'Product microservice'
-    - echo "Installing dependancies"
-    - npm install
-    - echo "Installation complete"
-    - npm run build
-    - echo "build successful"
-  artifacts:
-    paths:
-      - ./Product microservice/node_modules
+# build: 
+#   stage: build
+#   script:
+#     - cd ./'Product microservice'
+#     - echo "Installing dependancies"
+#     - npm install
+#     - echo "Installation complete"
+#     - npm run build
+#     - echo "build successful"
+#   artifacts:
+#     paths:
+#       - ./Product microservice/node_modules
 
 # test:
 #   stage: test
@@ -22,6 +22,7 @@ build:
 #     - echo "Test placeholder "
 
 deploy:
+  image: google/cloud-sdk:alpine
   stage: deploy
   script:
     - cd ./'Product microservice'
@@ -29,3 +30,4 @@ deploy:
     - docker build . -t ikoitchev/product-service-k8s
     - docker login -u ikoitchev -p dckr_pat_U6BHri9aLrhmLToNqVn7oMvKY3Q
     - docker push ikoitchev/product-service-k8s
+    - glcoud --help
