@@ -30,6 +30,6 @@ deploy:
     - docker login -u ikoitchev -p dckr_pat_U6BHri9aLrhmLToNqVn7oMvKY3Q
     - docker push ikoitchev/product-service-k8s
     - docker pull google/cloud-sdk:latest
-    # - docker run --name gcloud-config google/cloud-sdk
-    - gcloud auth login --cred-file=../credfile.txt
-    - glcoud --help
+    - (New-Object Net.WebClient).DownloadFile("https://dl.google.com/dl/cloudsdk/channels/rapid/GoogleCloudSDKInstaller.exe", "$env:Temp\GoogleCloudSDKInstaller.exe") & $env:Temp\GoogleCloudSDKInstaller.exe
+    - gcloud auth login
+
