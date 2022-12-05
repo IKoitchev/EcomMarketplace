@@ -6,7 +6,6 @@ stages:
   - deploy
 
 build: 
-
   stage: build
   script:
     - cd ./'Product microservice'
@@ -23,15 +22,12 @@ build:
 #   stage: test
 #   script:
 #     - echo "Test placeholder "
+
 deploy:
   stage: deploy
-  # image: google/cloud-sdk:alpine
   script:
     - cd ./'Product microservice'
-    - docker login -u ikoitchev -p dckr_pat_U6BHri9aLrhmLToNqVn7oMvKY3Q
-    - echo "logged in"
+    - pwd
     - docker build . -t ikoitchev/product-service-k8s
-    - echo "built"
+    - docker login -u ikoitchev -p dckr_pat_U6BHri9aLrhmLToNqVn7oMvKY3Q
     - docker push ikoitchev/product-service-k8s
-    - echo "pushed"
-    - glcoud --help
