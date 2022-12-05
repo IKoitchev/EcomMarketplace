@@ -22,7 +22,7 @@ stages:
 #     - echo "Test placeholder "
 
 deploy:
-  image: google/cloud-sdk:alpine
+  image: google/cloud-sdk
   stage: deploy
   script:
     - cd ./'Product microservice'
