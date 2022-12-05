@@ -1,10 +1,12 @@
+image: node:latest
+
 stages:
   - build
   # - test
   - deploy
 
 build: 
-  image: node:latest
+
   stage: build
   script:
     - cd ./'Product microservice'
