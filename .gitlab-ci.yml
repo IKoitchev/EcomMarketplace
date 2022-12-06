@@ -42,7 +42,8 @@ gcloud deploy:
     - echo cred.json
     - gcloud auth activate-service-account --key-file=cred.json
     - gcloud container clusters get-credentials ecom-cluster --region europe-west4 --project burnished-ember-369914
-    - kubectl
+    - kubectl get namespaces
+    - kubectl create -f 'Product microservice'/k8s/deployment.yaml
 
 
     
