@@ -41,6 +41,6 @@ gcloud deploy:
     - docker container ls
     - echo $SERVICE_ACCOUNT > ./key_file.json
     - ls
-    - docker run google/cloud-sdk gcloud auth activate-service-account --key-file=.\key_file.json
+    - docker run google/cloud-sdk gcloud auth activate-service-account --key-file=README.md
 
 
