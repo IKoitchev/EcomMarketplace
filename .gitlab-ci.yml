@@ -26,7 +26,9 @@ docker build:
   stage: dockerbuild
   image: docker:latest
   services:
-    - docker:19-dind
+  - name: docker:dind
+    command: ["--tls=false"]
+
   before_script:
     - cd ./'Product microservice'
     - docker login -u $DOCKER_USERNAME -p $DOCKER_ACCESS_KEY
