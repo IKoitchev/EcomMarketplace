@@ -25,8 +25,8 @@ stages:
 docker build:
   stage: dockerbuild
   image: docker:stable
-  # services:
-  #   - docker:dind
+  services:
+    - docker:dind
   before_script:
     - docker info
     - cd ./'Product microservice'
