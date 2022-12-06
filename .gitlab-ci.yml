@@ -33,6 +33,11 @@ docker build:
   script:
     - docker build . -t ikoitchev/product-service-k8s
     - docker push ikoitchev/product-service-k8s
+
+gcloud deploy:
+  stage: gkedeploy
+  image: google/cloud-sdk
+  script: 
     - gcloud auth activate-service-account --key-file=$SERVICE_ACCOUNT
 
 
