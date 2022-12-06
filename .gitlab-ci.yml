@@ -39,6 +39,7 @@ gcloud deploy:
   image: google/cloud-sdk:latest
   script: 
     - docker container ls
+    - echo $SERVICE_ACCOUNT
     - docker run google/cloud-sdk gcloud auth activate-service-account --key-file=$SERVICE_ACCOUNT
 
 
