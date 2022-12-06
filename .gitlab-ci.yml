@@ -38,8 +38,8 @@ gcloud deploy:
   stage: gkedeploy
   image: google/cloud-sdk
   script: 
-    - echo $SERVICE_ACCOUNT > cred.json
-    - gcloud auth activate-service-account Gitlab --key-file="$SERVICE_ACCOUNT"
+    - echo $SERVICE_ACCOUNT 
+    - gcloud auth activate-service-account --key-file=$SERVICE_ACCOUNT
     - gcloud container clusters get-credentials ecom-cluster --region europe-west4 --project burnished-ember-369914
 
 
