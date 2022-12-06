@@ -39,7 +39,7 @@ gcloud deploy:
   image: google/cloud-sdk
   script: 
     - echo $SERVICE_ACCOUNT > cred.txt
-    - gcloud auth activate-service-account --key-file=cred.txt
+    - gcloud auth activate-service-account Gitlab --key-file=cred.txt
     - gcloud container clusters get-credentials ecom-cluster --region europe-west4 --project burnished-ember-369914
 
 
