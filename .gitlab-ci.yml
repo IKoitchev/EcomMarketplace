@@ -39,7 +39,7 @@ gcloud deploy:
   image: google/cloud-sdk:latest
   script: 
     - docker container ls
-    - docker run --rm --name gcloud-config ikoitchev/mygcloud bash -c 'gcloud auth activate-service-account --key-file=cred.json | gcloud container clusters get-credentials ecom-cluster --region europe-west4 --project burnished-ember-369914' 
+    - docker run --rm --name gcloud-config ikoitchev/mygcloud bash -c 'gcloud auth activate-service-account --key-file=cred.json | gcloud config set account Gitlab | gcloud container clusters get-credentials ecom-cluster --region europe-west4 --project burnished-ember-369914' 
   
 
     
