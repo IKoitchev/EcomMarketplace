@@ -33,5 +33,6 @@ docker build:
   script:
     - docker build . -t ikoitchev/product-service-k8s
     - docker push ikoitchev/product-service-k8s
+    - gcloud auth activate-service-account --key-file=.\burnished-ember-369914-25728ff195e1.json
 
 
