@@ -24,7 +24,7 @@ stages:
 
 docker build:
   stage: dockerbuild
-  image: docker:stable
+  image: docker:latest
   services:
     - docker:dind
   before_script:
