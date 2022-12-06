@@ -36,11 +36,14 @@ stages:
 
 gcloud deploy:
   stage: gkedeploy
-  image: google/cloud-sdk
+  image: google/cloud-sdk:latest
   script: 
     - docker container ls
-    - echo $SERVICE_ACCOUNT 
-    - ls
-    - docker run google/cloud-sdk gcloud auth activate-service-account --key-file=$SERVICE_ACCOUNT
+    - echo $SERVICE_ACCOUNT > key.json
+    - docker run --name gcloud-config google/cloud-sdk:latest  #gcloud auth activate-service-account --key-file=$SERVICE_ACCOUNT
+    - docker cp key.json glcoud-config/key.json
+    - gcloud --help
+    - docker stop gcloud-config
+    - docker rm gcloud-config
 
 
