@@ -26,13 +26,9 @@ docker build:
   stage: dockerbuild
   image: docker:stable
   services:
-    - name: docker:dind
-      alias: thedockerhost
-  variables:
-    DOCKER_HOST: tcp://thedockerhost:2375/
-    DOCKER_DRIVER: overlay2
-    DOCKER_TLS_CERTDIR: ""
+    - docker:dind
   before_script:
+    - docker info
     - cd ./'Product microservice'
     - docker login -u $DOCKER_USERNAME -p $DOCKER_ACCESS_KEY
   script:
