@@ -38,8 +38,6 @@ gcloud deploy:
   stage: gkedeploy
   image: google/cloud-sdk
   script: 
-    - dockerd
-    - docker container ls
     - gcloud --help
     # - docker run --rm --name gcloud-config ikoitchev/mygcloud bash -c 'gcloud auth login --cred-file=cred.json | gcloud config set account Gitlab | gcloud container clusters get-credentials ecom-cluster --region europe-west4 --project burnished-ember-369914' 
   
