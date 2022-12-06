@@ -1,7 +1,8 @@
 stages:
   # - build
   # - test
-  - deploy
+  - dockerbuild
+  - gkedeploy
 
 # build: 
 #   stage: build
@@ -21,15 +22,16 @@ stages:
 #   script:
 #     - echo "Test placeholder "
 
-deploy:
-  stage: deploy
-  script:
+docker build:
+  stage: dockerbuild
+  image: docker:stable
+  services:
+    - docker:dind
+  before_script:
     - cd ./'Product microservice'
-    - pwd
-    - docker build . -t ikoitchev/product-service-k8s
     - docker login -u ikoitchev -p dckr_pat_U6BHri9aLrhmLToNqVn7oMvKY3Q
+  script:
+    - docker build . -t ikoitchev/product-service-k8s
     - docker push ikoitchev/product-service-k8s
-    - docker pull google/cloud-sdk:latest
-    - (New-Object Net.WebClient).DownloadFile("https://dl.google.com/dl/cloudsdk/channels/rapid/GoogleCloudSDKInstaller.exe", "$env:Temp\GoogleCloudSDKInstaller.exe") 
-    - gcloud auth login
+
 
