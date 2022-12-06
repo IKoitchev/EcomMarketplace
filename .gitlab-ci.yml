@@ -40,9 +40,9 @@ gcloud deploy:
   script: 
     - docker container ls
     - echo $SERVICE_ACCOUNT > key.json
-    - docker run --name gcloud-config google/cloud-sdk:latest sleep 5 #gcloud auth activate-service-account --key-file=
+    - docker run -i --name gcloud-config google/cloud-sdk:latest ls #gcloud auth activate-service-account --key-file=
     - docker cp key.json gcloud-config:/key.json
-    - docker exec gcloud-config ls
+    - docker gcloud-config ls
     - docker stop gcloud-config
     - docker rm gcloud-config
     
