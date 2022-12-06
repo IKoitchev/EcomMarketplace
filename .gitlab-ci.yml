@@ -25,10 +25,6 @@ stages:
 docker build:
   stage: dockerbuild
   image: docker:latest
-  services:
-  - name: docker:dind
-    entrypoint: ["dockerd-entrypoint.sh", "--tls=false"]
-
   before_script:
     - cd ./'Product microservice'
     - docker login -u $DOCKER_USERNAME -p $DOCKER_ACCESS_KEY
