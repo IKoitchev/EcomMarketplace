@@ -27,7 +27,7 @@ docker build:
   image: docker:latest
   services:
   - name: docker:dind
-    command: ["--tls=false"]
+    entrypoint: ["dockerd-entrypoint.sh", "--tls=false"]
 
   before_script:
     - cd ./'Product microservice'
