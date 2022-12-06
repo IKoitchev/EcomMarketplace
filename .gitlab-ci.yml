@@ -39,7 +39,7 @@ gcloud deploy:
   image: google/cloud-sdk:latest
   script: 
     - docker container ls
-    - docker run -rm --name gcloud-config ikoitchev/myglcoud gcloud auth activate-service-account --key-file=cred.json
+    - docker run --rm --name gcloud-config ikoitchev/myglcoud gcloud auth activate-service-account --key-file=cred.json
 
     
 
