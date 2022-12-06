@@ -24,7 +24,9 @@ stages:
 
 docker build:
   stage: dockerbuild
-  image: docker:latest
+  image: docker:stable
+  service:
+    - docker:19.03-dind
   before_script:
     - cd ./'Product microservice'
     - docker login -u $DOCKER_USERNAME -p $DOCKER_ACCESS_KEY
