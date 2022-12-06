@@ -1,7 +1,7 @@
 stages:
   # - build
   # - test
-  - dockerbuild
+  # - dockerbuild
   - gkedeploy
 
 # build: 
@@ -22,17 +22,17 @@ stages:
 #   script:
 #     - echo "Test placeholder "
 
-docker build:
-  stage: dockerbuild
-  image: docker:stable
-  services:
-    - docker:dind
-  before_script:
-    - cd ./'Product microservice'
-    - docker login -u $DOCKER_USERNAME -p $DOCKER_ACCESS_KEY
-  script:
-    - docker build . -t ikoitchev/product-service-k8s
-    - docker push ikoitchev/product-service-k8s
+# docker build:
+#   stage: dockerbuild
+#   image: docker:stable
+#   services:
+#     - docker:dind
+#   before_script:
+#     - cd ./'Product microservice'
+#     - docker login -u $DOCKER_USERNAME -p $DOCKER_ACCESS_KEY
+#   script:
+#     - docker build . -t ikoitchev/product-service-k8s
+#     - docker push ikoitchev/product-service-k8s
 
 gcloud deploy:
   stage: gkedeploy
