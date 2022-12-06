@@ -38,7 +38,7 @@ gcloud deploy:
   stage: gkedeploy
   image: google/cloud-sdk:latest
   script: 
-    - gcloud-config --help
+    - docker containers ls
     - gcloud auth activate-service-account --key-file=$SERVICE_ACCOUNT
 
 
