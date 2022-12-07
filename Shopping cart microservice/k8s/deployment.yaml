@@ -1,0 +1,31 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: cart-service-k8s
+spec:
+  selector:
+    matchLabels:
+      app: cart-service-k8s
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: cart-service-k8s
+    spec:
+      containers:
+        - name: cart-service-k8s
+          image: ikoitchev/cart-service-k8s
+          ports:
+            - containerPort: 3009
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: cart-service-k8s
+spec:
+  selector:
+    app: cart-service-k8s
+  ports:
+    - protocol: TCP
+      port: 3009
+  type: NodePort

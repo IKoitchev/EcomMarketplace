@@ -5,15 +5,16 @@ admin:
   host: localhost
 apiEndpoints:
   products:
-    host: localhost
+    # host: localhost
     paths: ['/products']
   images:
-    host: localhost
+    # host: localhost
     paths: ['/images**']
 serviceEndpoints:
   products:
-    url: 'product-service://ps:3008' # from inside the docker-compose
+    # url: 'product-service://ps:3008' # from inside the docker-compose
     # url: 'http://localhost:3008' # when ran from vs code
+    url: 'http://35.227.219.118/'
   images:
     url:
       'image-service://imgs:3010' # from inside the docker-compose
