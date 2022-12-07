@@ -17,8 +17,12 @@ function productRoutes(app: Express) {
   app.get('/products', getAllProductsHandler);
 
   app.post(
-    '/products',
-    [checkJwt, checkScopes(['create:product']), validate(createProductSchema)],
+    '/products', //authenticate
+    [
+      checkJwt,
+      checkScopes(['create:product']), // check permission
+      validate(createProductSchema),
+    ],
     createProductHandler
   );
 
@@ -43,6 +47,9 @@ function productRoutes(app: Express) {
   );
 
   app.get('/products/byNames', getProductsByNamesHandler); //endpoint is for testing
+  app.get('/', (req: Request, res: Response) => {
+    res.sendStatus(200);
+  });
 }
 
 export default productRoutes;
