@@ -1,23 +1,53 @@
-image: node:latest
-
 stages:
-  - build
-  - test
+  # - build
+  # - test
+  - dockerbuild
+  - gkedeploy
 
-build: # This job runs in the build stage, which runs first.
-  stage: build
-  script:
+# build: 
+#   stage: build
+#   script:
+#     - cd ./'Product microservice'
+#     - echo "Installing dependancies"
+#     - npm install
+#     - echo "Installation complete"
+#     - npm run build
+#     - echo "build successful"
+#   artifacts:
+#     paths:
+#       - ./Product microservice/node_modules
+
+# test:
+#   stage: test
+#   script:
+#     - echo "Test placeholder "
+
+docker build:
+  stage: dockerbuild
+  image: docker:stable
+  services:
+    - docker:dind
+  before_script:
+    - docker info
     - cd ./'Product microservice'
-    - echo "Installing dependancies"
-    - npm install
-    - echo "Installation complete"
-    - npm run build
-    - echo "build successful"
-  artifacts:
-    paths:
-      - ./Product microservice/node_modules
-
-test:
-  stage: test
+    - docker login -u $DOCKER_USERNAME -p $DOCKER_ACCESS_KEY
   script:
-    - echo "Test placeholder "
+    - docker build . -t ikoitchev/product-service-k8s
+    - docker push ikoitchev/product-service-k8s
+
+gcloud deploy:
+  stage: gkedeploy
+  image: google/cloud-sdk
+  script: 
+    - cat $SERVICE_ACCOUNT > cred.json
+    - echo cred.json
+    - gcloud auth activate-service-account --key-file=cred.json
+    - gcloud container clusters get-credentials ecom-cluster --region europe-west4 --project burnished-ember-369914
+    - kubectl get namespaces
+    - kubectl create -f 'Product microservice'/k8s/deployment.yaml
+
+
+    
+
+
+
