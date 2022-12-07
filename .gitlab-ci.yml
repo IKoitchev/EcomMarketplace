@@ -37,10 +37,10 @@ build image service:
     paths:
       - ./'Image microservice'/node_modules
 
-test:
-  stage: test
-  script:
-    - echo "Test placeholder "
+# test:
+#   stage: test
+#   script:
+#     - echo "Test placeholder "
 
 docker build:
   stage: dockerbuild
