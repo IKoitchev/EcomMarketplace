@@ -6,6 +6,7 @@ stages:
 
 build product service: 
   stage: build
+  image: node:16-alpine
   script:
     - cd ./'Product microservice'
     - npm install
@@ -17,6 +18,7 @@ build product service:
 
 build shopping cart service: 
   stage: build
+  image: node:16-alpine
   script:
     - cd ./'Shopping cart microservice'
     - npm install
@@ -28,6 +30,7 @@ build shopping cart service:
 
 build image service: 
   stage: build
+  image: node:16-alpine
   script:
     - cd ./'Image microservice'
     - npm install
