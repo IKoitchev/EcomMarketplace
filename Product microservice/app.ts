@@ -3,7 +3,7 @@ import config from 'config';
 import connect from './utils/db.connect';
 import log from './utils/logger';
 import productRoutes from './routes/product.routes';
-import RabbitMQChannel, { testRabbitMQ } from './utils/rabbitmq';
+import RabbitMQChannel from './utils/rabbitmq';
 import cors from 'cors';
 import { Channel, Connection, ConsumeMessage } from 'amqplib';
 import { ProductService } from './service/product.service';

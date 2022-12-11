@@ -4,6 +4,7 @@ import log from './src/utils/logger';
 import morgan from 'morgan';
 import ImageRoutes from './src/routes/imageRoutes';
 import fileUpload from 'express-fileupload';
+import { onProductUpdated } from './src/utils/rabbitmq';
 
 const port = 3010;
 const app = express();
@@ -20,5 +21,6 @@ app.use(
 
 app.listen(port, async () => {
   log.info(`App is running at http://localhost:${port}`);
+  onProductUpdated();
   ImageRoutes(app);
 });

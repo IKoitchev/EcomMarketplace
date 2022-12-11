@@ -42,11 +42,15 @@ function productRoutes(app: Express) {
   //can be done when/if/instead of checkScopes middleware returning error
   app.delete(
     '/products/:productId',
-    [checkJwt, checkScopes(['delete:any_product'])],
+    [checkJwt, checkScopes(['delete:current_user_product'])],
     deleteProductHandler
   );
 
-  app.get('/products/byNames', getProductsByNamesHandler); //endpoint is for testing
+  // app.get('/products/byNames', getProductsByNamesHandler); //endpoint is for testing
+  // app.get('/test', (req, res) => {
+  //   onProductUpdated();
+  //   res.sendStatus(200);
+  // });
   app.get('/', (req: Request, res: Response) => {
     res.sendStatus(200);
   });

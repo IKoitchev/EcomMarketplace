@@ -3,7 +3,7 @@ import dayjs from 'dayjs';
 
 const log = logger({
   base: { pid: false },
-  timestamp: () => `,"time":"${dayjs().format()}"`,
+  timestamp: () => `,"time":"${dayjs().format('YYYY-MM-DD - HH:mm:ss Z')}"`,
   transport: {
     target: 'pino-pretty',
     options: {

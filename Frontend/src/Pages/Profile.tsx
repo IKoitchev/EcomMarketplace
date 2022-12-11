@@ -6,7 +6,7 @@ const Profile: React.FC = () => {
   const { isAuthenticated, user, getAccessTokenSilently } = useAuth0();
 
   function handleClick() {
-    getAccessTokenSilently()
+    getAccessTokenSilently({ audience: 'https://auth-service' })
       .then((res) => {
         console.log(res);
         const options = {

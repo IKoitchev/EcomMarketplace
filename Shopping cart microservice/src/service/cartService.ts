@@ -1,6 +1,7 @@
 import { Guid } from 'js-guid';
 import { DocumentDefinition, Mongoose } from 'mongoose';
 import OrderModel, { OrderDocument } from '../models/order';
+import { ProductDocument } from '../models/product.model';
 import log from '../utils/logger';
 import { RabbitMQChannel } from '../utils/rabbitmq';
 
@@ -61,4 +62,24 @@ export async function getCartProducts(input: string[]) {
     replyTo: responseQ,
     correlationId: id,
   });
+}
+
+export async function removeFromCart(input: ProductDocument, cartId?: string) {
+  try {
+    if (!cartId) {
+      const result = await OrderModel.updateMany(
+        {},
+        {
+          $pull: {
+            productList: { name: input.name }, // better to do it with id but there are issues when using objectid ...
+          },
+        }
+      );
+
+      log.info(result);
+      return result;
+    }
+  } catch (err: any) {
+    log.error(err);
+  }
 }

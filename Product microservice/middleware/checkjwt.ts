@@ -11,7 +11,7 @@ const authConfig = {
   domain: 'https://dev-a7jprgzu.us.auth0.com/',
   audience: 'https://auth-service',
 };
-
+// check if token is valid
 export const checkJwt = expressjwt({
   secret: jwksRsa.expressJwtSecret({
     cache: true,
@@ -24,6 +24,6 @@ export const checkJwt = expressjwt({
   issuer: authConfig.domain,
   algorithms: ['RS256'],
 });
-
+// check if user has necessary permissions
 export const checkScopes = (permissions: string | string[]) =>
   guard.check(permissions);

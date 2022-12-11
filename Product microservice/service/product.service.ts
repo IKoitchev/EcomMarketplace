@@ -1,6 +1,7 @@
 import { DocumentDefinition } from 'mongoose';
 import ProductModel, { ProductDocument } from '../models/product.model';
 import { Route, Get, Put, Post, Delete, Body, Path, Tags } from 'tsoa';
+import { onProductChange } from '../utils/rabbitmq';
 
 @Route('products')
 @Tags('products')
@@ -32,6 +33,7 @@ export class ProductService {
     try {
       const product = await ProductModel.findByIdAndUpdate(input._id, input);
       if (product !== null) {
+        onProductChange(product, 'updated');
         return product.toJSON();
       }
       return null;
@@ -42,7 +44,9 @@ export class ProductService {
   @Delete('/:productId')
   public async deleteProduct(@Path() productId: string) {
     try {
-      return ProductModel.deleteOne({ _id: productId });
+      const deleted = ProductModel.findByIdAndDelete({ _id: productId });
+      onProductChange(deleted.cast(), 'deleted');
+      return deleted;
     } catch (e: any) {
       throw new Error(e);
     }
