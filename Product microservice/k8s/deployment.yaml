@@ -15,6 +15,31 @@ spec:
       containers:
         - name: product-service-k8s
           image: ikoitchev/product-service-k8s
+          env:
+            - name: MONGODB_CONNECTION_PRODUCT
+              valueFrom:
+                secretKeyRef:
+                  name: secret-ecom
+                  key: mongoDB
+                  optional: false
+            - name: AMQP_CONNECTION_STRING
+              valueFrom:
+                secretKeyRef:
+                  name: secret-ecom
+                  key: amqp
+                  optional: false
+            - name: DOMAIN
+              valueFrom:
+                secretKeyRef:
+                  name: secret-ecom
+                  key: auth0-domain
+                  optional: false
+            - name: AUDIENCE
+              valueFrom:
+                secretKeyRef:
+                  name: secret-ecom
+                  key: auth0-audience
+                  optional: false
           ports:
             - containerPort: 3008
 ---

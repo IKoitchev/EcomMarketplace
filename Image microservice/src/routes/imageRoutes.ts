@@ -1,4 +1,4 @@
-import { Express } from 'express';
+import { Express, Request, Response } from 'express';
 import {
   GetImageHandler,
   UploadImageHandler,
@@ -9,4 +9,8 @@ import { validateImage } from '../middleware/ValidateImage';
 export default function ImageRoutes(app: Express) {
   app.post('/images', [/*checkJwt,*/ validateImage], UploadImageHandler); //
   app.get('/images/:name', GetImageHandler);
+  app.get('/', (req: Request, res: Response) => {
+    // GKE health check
+    res.sendStatus(200);
+  });
 }

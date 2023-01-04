@@ -11,7 +11,7 @@ import swaggerUi from 'swagger-ui-express';
 import morgan from 'morgan';
 import fileUpload from 'express-fileupload';
 
-const port = config.get<number>('port');
+const port = process.env.PORT || 3008;
 const app = express();
 
 app.use(cors({ origin: 'http://localhost:3000' }));
@@ -37,34 +37,34 @@ let channel: Channel;
 const requestQ = 'shopping-cart-products-req';
 const responseQ = 'shopping-cart-products-res'; // to be moved to config?
 
-async function ConnectRabbitMQ() {
-  channel = await RabbitMQChannel();
-  await channel.assertQueue(requestQ);
+// async function ConnectRabbitMQ() {
+//   channel = await RabbitMQChannel();
+//   await channel.assertQueue(requestQ);
 
-  channel.consume(requestQ, async (msg) => {
-    // log.info('consume');
-    if (msg) {
-      const content = msg?.content.toString();
-      // log.info('content:');
-      // log.info(content);
-      const ps = new ProductService();
-      const products = await ps.getProductsByNames(content.split('---')); //change to ---
-      // log.info(products);
-      // log.info(msg?.properties);
-      channel.sendToQueue(
-        msg?.properties.replyTo,
-        Buffer.from(products?.toString() || ' '),
-        {
-          correlationId: msg?.properties.correlationId,
-        }
-      );
-    } else {
-      // log.error('no message');
-    }
-  });
-}
+//   channel.consume(requestQ, async (msg) => {
+//     // log.info('consume');
+//     if (msg) {
+//       const content = msg?.content.toString();
+//       // log.info('content:');
+//       // log.info(content);
+//       const ps = new ProductService();
+//       const products = await ps.getProductsByNames(content.split('---')); //change to ---
+//       // log.info(products);
+//       // log.info(msg?.properties);
+//       channel.sendToQueue(
+//         msg?.properties.replyTo,
+//         Buffer.from(products?.toString() || ' '),
+//         {
+//           correlationId: msg?.properties.correlationId,
+//         }
+//       );
+//     } else {
+//       // log.error('no message');
+//     }
+//   });
+// }
 
-ConnectRabbitMQ();
+// ConnectRabbitMQ();
 
 app.listen(port, async () => {
   log.info(`App is running at http://localhost:${port}`);

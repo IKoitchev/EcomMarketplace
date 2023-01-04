@@ -1,15 +1,13 @@
 import { expressjwt, GetVerificationKey, Request } from 'express-jwt';
-import { Response, NextFunction } from 'express';
 import jwksRsa from 'jwks-rsa';
-import log from '../utils/logger';
 var guard = require('express-jwt-permissions')({
   permissionsProperty: 'permissions',
 });
 
 // const authConfig = require('../config/auth_config.json');
 const authConfig = {
-  domain: 'https://dev-a7jprgzu.us.auth0.com/',
-  audience: 'https://auth-service',
+  domain: process.env.DOMAIN,
+  audience: process.env.AUDIENCE,
 };
 // check if token is valid
 export const checkJwt = expressjwt({

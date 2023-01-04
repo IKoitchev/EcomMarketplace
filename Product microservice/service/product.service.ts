@@ -44,7 +44,9 @@ export class ProductService {
   @Delete('/:productId')
   public async deleteProduct(@Path() productId: string) {
     try {
-      const deleted = ProductModel.findByIdAndDelete({ _id: productId });
+      // const deleted = ProductModel.findByIdAndDelete({ _id: productId });
+      // onProductChange(deleted.cast(), 'deleted');
+      const deleted = ProductModel.findById({ _id: productId });
       onProductChange(deleted.cast(), 'deleted');
       return deleted;
     } catch (e: any) {

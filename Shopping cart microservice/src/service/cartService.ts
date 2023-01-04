@@ -3,7 +3,7 @@ import { DocumentDefinition, Mongoose } from 'mongoose';
 import OrderModel, { OrderDocument } from '../models/order';
 import { ProductDocument } from '../models/product.model';
 import log from '../utils/logger';
-import { RabbitMQChannel } from '../utils/rabbitmq';
+import RabbitMQConnection from '../utils/rabbitmq';
 
 let correlationIDs: string[] = [];
 let id: string;
@@ -27,42 +27,42 @@ export async function addToCart(input: DocumentDefinition<OrderDocument>) {
   }
 }
 
-export async function getCartProducts(input: string[]) {
-  const requestQ = 'shopping-cart-products-req';
-  const responseQ = 'shopping-cart-products-res';
+// export async function getCartProducts(input: string[]) {
+//   const requestQ = 'shopping-cart-products-req';
+//   const responseQ = 'shopping-cart-products-res';
 
-  const channel = await RabbitMQChannel();
-  await channel.assertQueue(requestQ);
-  await channel.assertQueue(responseQ);
+//   const channel = await RabbitMQChannel();
+//   await channel.assertQueue(requestQ);
+//   await channel.assertQueue(responseQ);
 
-  id = getGuid();
-  correlationIDs.push(id);
-  let content: string;
+//   id = getGuid();
+//   correlationIDs.push(id);
+//   let content: string;
 
-  channel.consume(
-    responseQ,
-    async function (msg) {
-      log.info('check');
-      if (correlationIDs.includes(msg?.properties.correlationId)) {
-        correlationIDs.splice(
-          correlationIDs.indexOf(msg?.properties.correlationId),
-          1
-        );
-        log.info(msg?.content.toString());
-        content = msg!.content.toString();
-      }
-    },
-    {
-      noAck: false,
-    }
-  );
+//   channel.consume(
+//     responseQ,
+//     async function (msg) {
+//       log.info('check');
+//       if (correlationIDs.includes(msg?.properties.correlationId)) {
+//         correlationIDs.splice(
+//           correlationIDs.indexOf(msg?.properties.correlationId),
+//           1
+//         );
+//         log.info(msg?.content.toString());
+//         content = msg!.content.toString();
+//       }
+//     },
+//     {
+//       noAck: false,
+//     }
+//   );
 
-  log.info('send');
-  channel.sendToQueue(requestQ, Buffer.from(input.join('---')), {
-    replyTo: responseQ,
-    correlationId: id,
-  });
-}
+//   log.info('send');
+//   channel.sendToQueue(requestQ, Buffer.from(input.join('---')), {
+//     replyTo: responseQ,
+//     correlationId: id,
+//   });
+// }
 
 export async function removeFromCart(input: ProductDocument, cartId?: string) {
   try {

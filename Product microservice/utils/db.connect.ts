@@ -1,9 +1,11 @@
 import mongoose from 'mongoose';
 import config from 'config';
 import logger from './logger';
+require('dotenv').config();
 
 async function connect() {
-  const dbUri = config.get<string>('dbUri');
+  const dbUri = process.env.MONGODB_CONNECTION_PRODUCT || '';
+  // config.get<string>('dbUri');
 
   try {
     await mongoose.connect(dbUri);

@@ -1,7 +1,7 @@
 import { Request, Response } from 'express';
 import {
   addToCart,
-  getCartProducts,
+  // getCartProducts,
   removeFromCart,
 } from '../service/cartService';
 import log from '../utils/logger';
@@ -16,11 +16,11 @@ export async function addToCartHandler(req: Request, res: Response) {
     res.status(500).send(err?.message);
   }
 }
-export async function getCartProductsHandler(req: Request, res: Response) {
-  const products = await getCartProducts(req.body);
-  log.info('controller');
-  res.status(200).send('products');
-}
+// export async function getCartProductsHandler(req: Request, res: Response) {
+//   const products = await getCartProducts(req.body);
+//   log.info('controller');
+//   res.status(200).send('products');
+// }
 
 export async function removeFromCartHandler(req: Request, res: Response) {
   try {

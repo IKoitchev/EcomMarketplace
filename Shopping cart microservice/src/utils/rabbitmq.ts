@@ -1,26 +1,20 @@
-import client, { Channel, Connection } from 'amqplib';
+import client, { Channel, Connection, ConfirmChannel } from 'amqplib';
 import { ProductDocument } from '../models/product.model';
 import { removeFromCart } from '../service/cartService';
 import log from './logger';
+require('dotenv').config();
 
-const connectionString: string =
-  'amqps://cmipbrwl:GZQsHdOTlslvA6xxV_xS2Ws8oXlhwiCW@rat.rmq2.cloudamqp.com/cmipbrwl';
+const connectionString: string = process.env.AMQP_CONNECTION_STRING || '';
 
-export async function RabbitMQChannel() {
+export default async function RabbitMQConnection() {
   const connection: Connection = await client.connect(connectionString);
-  const channel: Channel = await connection.createChannel();
-
-  return channel;
-}
-
-export async function testRabbitMQ() {
-  const channel: Channel = await RabbitMQChannel();
-  await channel.assertQueue('app-start-queue');
-  channel.sendToQueue('app-start-queue', Buffer.from(`message test`));
+  return connection;
 }
 
 export async function onProductUpdated() {
-  const channel: Channel = await RabbitMQChannel();
+  const connection: Connection = await RabbitMQConnection();
+  const channel: ConfirmChannel = await connection.createConfirmChannel();
+
   const exchange = 'product-updates';
   channel.assertExchange(exchange, 'fanout', {
     durable: false,
@@ -43,8 +37,10 @@ export async function onProductUpdated() {
   );
 }
 export async function onProductDeleted() {
-  const channel: Channel = await RabbitMQChannel();
-  const exchange = 'product-deletions';
+  const connection: Connection = await RabbitMQConnection();
+  const channel: Channel = await connection.createChannel();
+
+  const exchange = 'deleted-products';
   channel.assertExchange(exchange, 'fanout', {
     durable: false,
   });
@@ -59,10 +55,16 @@ export async function onProductDeleted() {
       if (msg?.content) {
         const product: ProductDocument = JSON.parse(msg.content.toString());
         log.info(' [x] deleted product queue');
-        log.info(product);
-        removeFromCart(product);
+        removeFromCart(product)
+          .then(() => {
+            log.info(msg.content.toString());
+            channel.ack(msg);
+          })
+          .catch((err) => {
+            log.error(err.message);
+          });
       }
     },
-    { noAck: true }
+    { noAck: false }
   );
 }

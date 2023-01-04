@@ -15,6 +15,31 @@ spec:
       containers:
         - name: cart-service-k8s
           image: ikoitchev/cart-service-k8s
+          env:
+            - name: MONGODB_CONNECTION_CART
+              valueFrom:
+                secretKeyRef:
+                  name: secret-ecom
+                  key: mongoDB-shopping-cart
+                  optional: false
+            - name: AMQP_CONNECTION_STRING
+              valueFrom:
+                secretKeyRef:
+                  name: secret-ecom
+                  key: amqp
+                  optional: false
+            - name: DOMAIN
+              valueFrom:
+                secretKeyRef:
+                  name: secret-ecom
+                  key: auth0-domain
+                  optional: false
+            - name: AUDIENCE
+              valueFrom:
+                secretKeyRef:
+                  name: secret-ecom
+                  key: auth0-audience
+                  optional: false
           ports:
             - containerPort: 3009
 ---

@@ -42,7 +42,7 @@ function productRoutes(app: Express) {
   //can be done when/if/instead of checkScopes middleware returning error
   app.delete(
     '/products/:productId',
-    [checkJwt, checkScopes(['delete:current_user_product'])],
+    // [checkJwt, checkScopes(['delete:current_user_product'])],
     deleteProductHandler
   );
 
@@ -52,6 +52,7 @@ function productRoutes(app: Express) {
   //   res.sendStatus(200);
   // });
   app.get('/', (req: Request, res: Response) => {
+    // GKE health check
     res.sendStatus(200);
   });
 }

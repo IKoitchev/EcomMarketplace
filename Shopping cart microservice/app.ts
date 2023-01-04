@@ -2,11 +2,7 @@ import express from 'express';
 import config from 'config';
 import connect from './src/utils/db.connect';
 import logger from './src/utils/logger';
-import {
-  onProductDeleted,
-  onProductUpdated,
-  RabbitMQChannel,
-} from './src/utils/rabbitmq';
+import { onProductDeleted, onProductUpdated } from './src/utils/rabbitmq';
 require('dotenv').config();
 import shoppingCartRoutes from './src/routes/shoppingCartRoutes';
 

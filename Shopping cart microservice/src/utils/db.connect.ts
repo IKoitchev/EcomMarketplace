@@ -4,7 +4,8 @@ import logger from './logger';
 
 async function connect() {
   //const dbUri = config.get<string>('dbUri');
-  const dbUri = process.env.MONGODB_CONNECTION || config.get<string>('dbUri');
+  const dbUri =
+    process.env.MONGODB_CONNECTION_CART || config.get<string>('dbUri');
 
   try {
     await mongoose.connect(dbUri);
