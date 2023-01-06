@@ -9,7 +9,7 @@
     "dev": "concurrently \"nodemon\" \"nodemon -x tsoa spec\"",
     "build": "tsc",
     "start": "tsc && node dist/server.js",
-    "test": "jest",
+    "test": "jest --detectOpenHandles --forceExit",
     "swagger": "tsoa spec"
   },
   "repository": {

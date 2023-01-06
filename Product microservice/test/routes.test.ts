@@ -1,6 +1,7 @@
 import mongoose from 'mongoose';
 import request from 'supertest';
 import app from '../app';
+import { ProductDocument } from '../models/product.model';
 
 import productRoutes from '../routes/product.routes';
 
@@ -20,10 +21,10 @@ describe('Product routes', () => {
   });
 });
 
-// describe('Product routes', () => {
-//   test('Get Products', async () => {
-//     const res = await request(app).get('/products');
-//     expect(res.status).toEqual(200);
-//     expect(res.body).toBeInstanceOf(Array<ProductDocument>);
-//   });
-// });
+describe('Product routes', () => {
+  test('Get Products', async () => {
+    const res = await request(app).get('/products');
+    expect(res.status).toEqual(200);
+    expect(res.body).toBeInstanceOf(Array<ProductDocument>);
+  });
+});
