@@ -42,18 +42,21 @@ build image service:
 
 test product service:
   stage: test
+  image: node:16-alpine
   script:
     - cd ./'Product microservice'
     - npm test
 
 test shopping cart service:
   stage: test
+  image: node:16-alpine
   script:
     - cd ./'Shopping cart microservice'
     - npm test
 
 test image service:
   stage: test
+  image: node:16-alpine
   script:
     - cd ./'Image microservice'
     - npm test
