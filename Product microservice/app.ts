@@ -1,4 +1,4 @@
-import express from 'express';
+import express, { Request, Response } from 'express';
 import config from 'config';
 import connect from './utils/db.connect';
 import log from './utils/logger';
@@ -11,7 +11,6 @@ import swaggerUi from 'swagger-ui-express';
 import morgan from 'morgan';
 import fileUpload from 'express-fileupload';
 
-const port = process.env.PORT || 3008;
 const app = express();
 
 app.use(cors({ origin: 'http://localhost:3000' }));
@@ -32,7 +31,10 @@ app.use(
     createParentPath: true,
   })
 );
-
+// app.get('/healthcheck', (req: Request, res: Response) => {
+//   console.log('asodfghasldghsadgdgsdlgsdgsdbjgaaslasbg');
+//   res.sendStatus(200);
+// });
 let channel: Channel;
 const requestQ = 'shopping-cart-products-req';
 const responseQ = 'shopping-cart-products-res'; // to be moved to config?
@@ -66,8 +68,4 @@ const responseQ = 'shopping-cart-products-res'; // to be moved to config?
 
 // ConnectRabbitMQ();
 
-app.listen(port, async () => {
-  log.info(`App is running at http://localhost:${port}`);
-  await connect();
-  productRoutes(app);
-});
+export default app;

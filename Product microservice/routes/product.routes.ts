@@ -14,6 +14,7 @@ function productRoutes(app: Express) {
   app.get('/healthcheck', (req: Request, res: Response) => {
     res.sendStatus(200);
   });
+
   app.get('/products', getAllProductsHandler);
 
   app.post(
@@ -56,5 +57,4 @@ function productRoutes(app: Express) {
     res.sendStatus(200);
   });
 }
-
 export default productRoutes;

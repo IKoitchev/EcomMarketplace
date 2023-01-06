@@ -4,7 +4,7 @@ stages:
   - dockerbuild
   - gkedeploy
 
-build product service: 
+build product service:
   stage: build
   image: node:16-alpine
   script:
@@ -16,7 +16,7 @@ build product service:
     paths:
       - ./Product microservice/node_modules
 
-build shopping cart service: 
+build shopping cart service:
   stage: build
   image: node:16-alpine
   script:
@@ -28,7 +28,7 @@ build shopping cart service:
     paths:
       - ./'Shopping cart microservice'/node_modules
 
-build image service: 
+build image service:
   stage: build
   image: node:16-alpine
   script:
@@ -40,10 +40,23 @@ build image service:
     paths:
       - ./'Image microservice'/node_modules
 
-test:
+test product service:
   stage: test
   script:
-    - echo "Test placeholder "
+    - cd ./'Product microservice'
+    - npm test
+
+test shopping cart service:
+  stage: test
+  script:
+    - cd ./'Shopping cart microservice'
+    - npm test
+
+test image service:
+  stage: test
+  script:
+    - cd ./'Image microservice'
+    - npm test
 
 docker build:
   stage: dockerbuild
@@ -64,7 +77,7 @@ docker build:
 gcloud deploy:
   stage: gkedeploy
   image: google/cloud-sdk
-  script: 
+  script:
     - cat $SERVICE_ACCOUNT > cred.json
     - echo cred.json
     - gcloud auth activate-service-account --key-file=cred.json
@@ -73,9 +86,3 @@ gcloud deploy:
     - kubectl apply -f 'Product microservice'/k8s/deployment.yaml
     - kubectl apply -f 'Shopping cart microservice'/k8s/deployment.yaml
     - kubectl apply -f 'Image microservice'/k8s/deployment.yaml
-
-
-    
-
-
-
