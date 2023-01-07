@@ -33,6 +33,6 @@
     "dev": "nodemon server.ts",
     "build": "tsc",
     "start": "tsc && node dist/server.js",
-    "test": "jest"
+    "test": "jest --detectOpenHandles"
   }
 }

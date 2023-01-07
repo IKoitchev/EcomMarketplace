@@ -6,6 +6,7 @@ import {
 } from '../controllers/cartController';
 import { addtoCartSchema } from '../schema/orderSchema';
 import validate from '../middleware/validateOrder';
+import OrderModel from '../models/order';
 
 export default function ShoppingCartRoutes(app: Express) {
   // app.get('/cart/products', getCartProductsHandler);
@@ -16,5 +17,9 @@ export default function ShoppingCartRoutes(app: Express) {
   app.get('/', (req: Request, res: Response) => {
     // GKE health check
     res.sendStatus(200);
+  });
+  app.get('/all', async (req: Request, res: Response) => {
+    const resp = await OrderModel.find();
+    res.send(resp);
   });
 }

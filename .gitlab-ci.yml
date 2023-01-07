@@ -49,14 +49,14 @@ test product service:
 
 test shopping cart service:
   stage: test
-  image: node:16-alpine
+  image: node:16
   script:
     - cd ./'Shopping cart microservice'
     - npm test
 
 test image service:
   stage: test
-  image: node:16-alpine
+  image: node:16
   script:
     - cd ./'Image microservice'
     - npm test
