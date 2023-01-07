@@ -14,7 +14,8 @@ build product service:
     - echo "build successful"
   artifacts:
     paths:
-      - ./node_modules
+      paths:
+      - node_modules
 
 build shopping cart service:
   stage: build
@@ -26,7 +27,8 @@ build shopping cart service:
     - echo "build successful"
   artifacts:
     paths:
-      - ./node_modules
+      paths:
+      - node_modules
 
 build image service:
   stage: build
@@ -38,7 +40,8 @@ build image service:
     - echo "build successful"
   artifacts:
     paths:
-      - ./node_modules
+      paths:
+      - node_modules
 
 test product service:
   stage: test
