@@ -14,7 +14,7 @@ build product service:
     - echo "build successful"
   artifacts:
     paths:
-      - ./Product microservice/node_modules
+      - ./'Product microservice'/node_modules
 
 build shopping cart service:
   stage: build
