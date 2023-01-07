@@ -14,7 +14,7 @@ build product service:
     - echo "build successful"
   artifacts:
     paths:
-      - ./Product microservice/node_modules
+      - node_modules
 
 build shopping cart service:
   stage: build
@@ -26,7 +26,7 @@ build shopping cart service:
     - echo "build successful"
   artifacts:
     paths:
-      - ./Shopping cart microservice/node_modules
+      - node_modules
 
 build image service:
   stage: build
@@ -38,7 +38,7 @@ build image service:
     - echo "build successful"
   artifacts:
     paths:
-      - ./Image microservice/node_modules
+      - node_modules
 
 test product service:
   stage: test
@@ -79,7 +79,7 @@ docker build:
 
 gcloud deploy:
   stage: gkedeploy
-  image: google/cloud-sdk:latest
+  image: google/cloud-sdk:160.0.0
   script:
     - cat $SERVICE_ACCOUNT > cred.json
     - echo cred.json
