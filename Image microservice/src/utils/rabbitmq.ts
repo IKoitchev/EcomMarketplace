@@ -1,4 +1,9 @@
-import client, { Channel, ConfirmChannel, Connection } from 'amqplib';
+import client, {
+  Channel,
+  ConfirmChannel,
+  Connection,
+  ConsumeMessage,
+} from 'amqplib';
 import { ProductDocument } from '../models/product.model';
 import { deleteImage } from '../service/imageService';
 import log from './logger';
@@ -24,14 +29,35 @@ export async function onProductUpdated() {
   });
   channel.bindQueue(q.queue, exchange, '');
 
-  channel.consume(q.queue, (msg) => {
-    if (msg?.content) {
-      const product: ProductDocument = JSON.parse(msg.content.toString());
-      log.info('[x] deleted product queue ');
-      log.info(product);
-      // delete image
-      // deleteImage(product.image);
-      channel.ack(msg);
-    }
+  channel.consume(
+    q.queue,
+    async (msg) => {
+      if (msg?.content) {
+        const product: ProductDocument = JSON.parse(msg.content.toString());
+        log.info('[x] deleted product queue ');
+        log.info(product);
+        // delete image
+        const res = await deleteImage(product.image);
+
+        sendToResponseQueue(channel, msg, res);
+      }
+    },
+    { noAck: false }
+  );
+}
+async function sendToResponseQueue(
+  channel: Channel,
+  message: ConsumeMessage,
+  result: string
+) {
+  log.info(message.content.toString());
+  log.info(message.properties);
+
+  const replyQ = message?.properties.replyTo;
+  await channel.assertQueue(replyQ);
+
+  channel.sendToQueue(replyQ, Buffer.from('error' + result), {
+    correlationId: message.properties.correlationId,
+    headers: { sender: 'Image service' },
   });
 }

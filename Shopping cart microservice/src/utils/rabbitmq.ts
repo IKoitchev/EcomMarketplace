@@ -1,4 +1,9 @@
-import client, { Channel, Connection, ConfirmChannel } from 'amqplib';
+import client, {
+  Channel,
+  Connection,
+  ConfirmChannel,
+  ConsumeMessage,
+} from 'amqplib';
 import { ProductDocument } from '../models/product.model';
 import { removeFromCart } from '../service/cartService';
 import log from './logger';
@@ -36,6 +41,7 @@ export async function onProductUpdated() {
     { noAck: true }
   );
 }
+
 export async function onProductDeleted() {
   const connection: Connection = await RabbitMQConnection();
   const channel: Channel = await connection.createChannel();
@@ -51,20 +57,38 @@ export async function onProductDeleted() {
 
   channel.consume(
     q.queue,
-    (msg) => {
+    async (msg) => {
       if (msg?.content) {
         const product: ProductDocument = JSON.parse(msg.content.toString());
         log.info(' [x] deleted product queue');
-        removeFromCart(product)
+        let status = 'success';
+        await removeFromCart(product)
           .then(() => {
             log.info(msg.content.toString());
-            channel.ack(msg);
           })
           .catch((err) => {
             log.error(err.message);
+            status = err.message;
           });
+        sendToResponseQueue(channel, msg, status);
       }
     },
     { noAck: false }
   );
+}
+async function sendToResponseQueue(
+  channel: Channel,
+  message: ConsumeMessage,
+  result: string
+) {
+  log.info(message.content.toString());
+  log.info(message.properties);
+
+  const replyQ = message?.properties.replyTo;
+  await channel.assertQueue(replyQ);
+
+  channel.sendToQueue(replyQ, Buffer.from(result), {
+    correlationId: message.properties.correlationId,
+    headers: { sender: 'Shopping cart service' },
+  });
 }
