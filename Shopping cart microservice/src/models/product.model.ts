@@ -6,15 +6,17 @@ export interface ProductDocument extends Document {
   price: number;
   image: string;
   author: string;
+  checksum: string;
 }
 
-const ProductSchema: Schema = new Schema(
+export const ProductSchema: Schema = new Schema(
   {
     name: { type: String, required: true },
     description: { type: String, required: true },
     price: { type: Number, required: true },
     image: { type: String, required: true },
     author: { type: String, required: false },
+    checksum: { type: String, required: true, default: '' },
   },
   { timestamps: true }
 );

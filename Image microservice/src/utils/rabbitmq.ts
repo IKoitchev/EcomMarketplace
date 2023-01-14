@@ -56,7 +56,7 @@ async function sendToResponseQueue(
   const replyQ = message?.properties.replyTo;
   await channel.assertQueue(replyQ);
 
-  channel.sendToQueue(replyQ, Buffer.from('error' + result), {
+  channel.sendToQueue(replyQ, Buffer.from(result), {
     correlationId: message.properties.correlationId,
     headers: { sender: 'Image service' },
   });

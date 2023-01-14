@@ -1,6 +1,7 @@
 import { Request, Response } from 'express';
 import {
   addToCart,
+  checkout,
   // getCartProducts,
   removeFromCart,
 } from '../service/cartService';
@@ -10,7 +11,7 @@ export async function addToCartHandler(req: Request, res: Response) {
   try {
     const result = await addToCart(req.body);
     //verify if product exists
-    res.status(200).send('Cart updated');
+    res.status(200).send(result);
   } catch (err: any) {
     log.error(err?.message);
     res.status(500).send(err?.message);
@@ -24,8 +25,17 @@ export async function addToCartHandler(req: Request, res: Response) {
 
 export async function removeFromCartHandler(req: Request, res: Response) {
   try {
-    const result = await removeFromCart(req.body);
+    const result = await removeFromCart(req.body.product, req.body.userEmail);
     res.status(204).send(result);
+  } catch (err: any) {
+    log.error(err?.message);
+    res.status(500).send(err?.message);
+  }
+}
+export async function checkoutHandler(req: Request, res: Response) {
+  try {
+    const result = await checkout(req.body.userEmail);
+    res.status(200).send(result);
   } catch (err: any) {
     log.error(err?.message);
     res.status(500).send(err?.message);

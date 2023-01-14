@@ -40,6 +40,24 @@ spec:
                   name: secret-ecom
                   key: auth0-audience
                   optional: false
+            - name: REDIS_HOST
+              valueFrom:
+                secretKeyRef:
+                  name: secret-ecom
+                  key: redis-host
+                  optional: false
+            - name: REDIS_PASS
+              valueFrom:
+                secretKeyRef:
+                  name: secret-ecom
+                  key: redis-pass
+                  optional: false
+            - name: PEPPER
+              valueFrom:
+                secretKeyRef:
+                  name: secret-ecom
+                  key: pepper
+                  optional: false
           ports:
             - containerPort: 3009
 ---

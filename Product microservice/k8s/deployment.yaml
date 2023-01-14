@@ -40,6 +40,12 @@ spec:
                   name: secret-ecom
                   key: auth0-audience
                   optional: false
+            - name: PEPPER
+              valueFrom:
+                secretKeyRef:
+                  name: secret-ecom
+                  key: pepper
+                  optional: false
           ports:
             - containerPort: 3008
 ---

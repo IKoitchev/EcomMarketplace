@@ -2,6 +2,8 @@ import { DocumentDefinition } from 'mongoose';
 import ProductModel, { ProductDocument } from '../models/product.model';
 import { Route, Get, Put, Post, Delete, Body, Path, Tags } from 'tsoa';
 import { onProductChange } from '../utils/rabbitmq';
+import log from '../utils/logger';
+import { hash } from './hashing/hashingService';
 
 @Route('products')
 @Tags('products')
@@ -11,8 +13,19 @@ export class ProductService {
     @Body() input: DocumentDefinition<ProductDocument>
   ) {
     try {
+      //create object
       const product = await ProductModel.create(input);
-      return product.toJSON();
+
+      const checksum = hash({ ...product.toJSON() }, { pepper: 'a' });
+      log.info(checksum);
+
+      const updated = await ProductModel.findOneAndUpdate(
+        { _id: product._id },
+        { $set: { checksum: checksum } },
+        { upsert: true, new: true }
+      );
+
+      return updated?.toJSON();
     } catch (e: any) {
       throw new Error(e);
     }
@@ -44,9 +57,8 @@ export class ProductService {
   @Delete('/:productId')
   public async deleteProduct(@Path() productId: string) {
     try {
-      // const deleted = ProductModel.findByIdAndDelete({ _id: productId });
-      // onProductChange(deleted.cast(), 'deleted');
-      const deleted = ProductModel.findById({ _id: productId });
+      const deleted = ProductModel.findOneAndDelete({ _id: productId });
+      // const deleted = ProductModel.findById({ _id: productId });
       onProductChange(deleted.cast(), 'deleted');
       return deleted;
     } catch (e: any) {

@@ -62,7 +62,7 @@ export async function onProductDeleted() {
         const product: ProductDocument = JSON.parse(msg.content.toString());
         log.info(' [x] deleted product queue');
         let status = 'success';
-        await removeFromCart(product)
+        await removeFromCart(product, '')
           .then(() => {
             log.info(msg.content.toString());
           })

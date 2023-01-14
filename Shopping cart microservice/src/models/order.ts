@@ -1,22 +1,24 @@
 import { model, Schema, Model, Document } from 'mongoose';
-import { boolean } from 'zod';
 import { ProductDocument } from './product.model';
 
 export interface OrderDocument extends Document {
-  userId: string;
+  userEmail: string;
   productList: Array<ProductDocument>;
   total: number;
 }
+export interface UpdateCartDocument extends Document {
+  userEmail: string;
+  product: ProductDocument;
+}
 const OrderSchema: Schema = new Schema(
   {
-    userId: { type: String, required: true },
+    userEmail: { type: String, required: true },
     productList: { type: Array, required: true },
     total: { type: Number, required: false },
-    isFinished: { type: Boolean, required: true, default: false },
+    isFinished: { type: Boolean, required: false, default: false },
   },
   { timestamps: true }
 );
-
 OrderSchema.pre('save', async function (next) {
   let order = this as OrderDocument;
 });
