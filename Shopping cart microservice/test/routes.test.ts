@@ -17,8 +17,8 @@ describe('Shopping cart routes', () => {
     const res = await request(app).get('/');
     expect(res.status).toEqual(200);
   });
-  test('Get all orders', async () => {
-    const res = await request(app).get('/all');
-    expect(res.status).toEqual(200);
+  test('Get all orders - without permission', async () => {
+    const res = await request(app).get('/cart/products');
+    expect(res.status).toEqual(401);
   });
 });
