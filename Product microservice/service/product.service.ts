@@ -3,7 +3,7 @@ import ProductModel, { ProductDocument } from '../models/product.model';
 import { Route, Get, Put, Post, Delete, Body, Path, Tags } from 'tsoa';
 import { onProductChange } from '../utils/rabbitmq';
 import log from '../utils/logger';
-import { hash } from './hashing/hashingService';
+import { hash, objectIsModified } from './hashing/hashingService';
 
 @Route('products')
 @Tags('products')
@@ -16,7 +16,7 @@ export class ProductService {
       //create object
       const product = await ProductModel.create(input);
 
-      const checksum = hash({ ...product.toJSON() }, { pepper: 'a' });
+      const checksum = hash({ ...product.toJSON() });
       log.info(checksum);
 
       const updated = await ProductModel.findOneAndUpdate(
@@ -44,8 +44,15 @@ export class ProductService {
     @Body() input: DocumentDefinition<ProductDocument>
   ) {
     try {
-      const product = await ProductModel.findByIdAndUpdate(input._id, input);
+      const newChecksum = hash({ ...input });
+      input.checksum = newChecksum;
+      const product = await ProductModel.findByIdAndUpdate(
+        { _id: input._id, author: input.author },
+        input,
+        { new: true }
+      );
       if (product !== null) {
+        log.info('updated');
         onProductChange(product, 'updated');
         return product.toJSON();
       }

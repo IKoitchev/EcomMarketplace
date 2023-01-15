@@ -4,7 +4,6 @@ import {
   createProductHandler,
   updateProductHandler,
   deleteProductHandler,
-  getProductsByNamesHandler,
 } from '../controllers/product.controller';
 import { checkJwt, checkScopes } from '../middleware/checkjwt';
 import validate from '../middleware/validate.product';
@@ -33,21 +32,13 @@ function productRoutes(app: Express) {
     updateProductHandler
   );
 
-  //this deletes only if user is admin
-  //good to have: check if the user id in the jwt is the same as the one of the author
-  //maybe make unique user names and get user id by name from the management API
-  //can be done when/if/instead of checkScopes middleware returning error
+  //only admin can delete
   app.delete(
     '/products/:productId',
-    // [checkJwt, checkScopes(['delete:current_user_product'])],
+    [checkJwt, checkScopes(['delete:any_product'])],
     deleteProductHandler
   );
 
-  // app.get('/products/byNames', getProductsByNamesHandler); //endpoint is for testing
-  // app.get('/test', (req, res) => {
-  //   onProductUpdated();
-  //   res.sendStatus(200);
-  // });
   app.get('/', (req: Request, res: Response) => {
     // GKE health check
     res.sendStatus(200);

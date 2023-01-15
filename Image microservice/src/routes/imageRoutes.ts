@@ -3,11 +3,15 @@ import {
   GetImageHandler,
   UploadImageHandler,
 } from '../controllers/ImageController';
-import { checkJwt } from '../middleware/checkjwt';
+import { checkJwt, checkScopes } from '../middleware/checkjwt';
 import { validateImage } from '../middleware/ValidateImage';
 
 export default function ImageRoutes(app: Express) {
-  app.post('/images', [/*checkJwt,*/ validateImage], UploadImageHandler); //
+  app.post(
+    '/images',
+    [checkJwt, checkScopes(['create:product']), validateImage],
+    UploadImageHandler
+  ); //
   app.get('/images/:name', GetImageHandler);
   app.get('/', (req: Request, res: Response) => {
     // GKE health check

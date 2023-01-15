@@ -1,10 +1,9 @@
-import { expressjwt, GetVerificationKey, Request } from 'express-jwt';
+import { expressjwt, GetVerificationKey } from 'express-jwt';
 import jwksRsa from 'jwks-rsa';
 var guard = require('express-jwt-permissions')({
   permissionsProperty: 'permissions',
 });
 
-// const authConfig = require('../config/auth_config.json');
 const authConfig = {
   domain: process.env.DOMAIN,
   audience: process.env.AUDIENCE,

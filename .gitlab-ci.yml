@@ -79,7 +79,7 @@ docker build:
 
 gcloud deploy:
   stage: gkedeploy
-  image: google/cloud-sdk:160.0.0
+  image: google/cloud-sdk:410.0.0
   script:
     - cat $SERVICE_ACCOUNT > cred.json
     - echo cred.json

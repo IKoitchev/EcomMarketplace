@@ -1,7 +1,9 @@
 import { Request, Response } from 'express';
+import { objectIsModified } from '../service/hashing/hashingService';
 
 import { ProductService } from '../service/product.service';
-import logger from '../utils/logger';
+import { getEmailFromJwt } from '../utils/jwtHelper';
+import log from '../utils/logger';
 
 export async function createProductHandler(req: Request, res: Response) {
   try {
@@ -9,7 +11,7 @@ export async function createProductHandler(req: Request, res: Response) {
     const product = await ps.createProduct(req.body);
     return res.status(201).send(product);
   } catch (e: any) {
-    logger.error(e);
+    log.error(e);
     return res.status(400).send(e.message);
   }
 }
@@ -24,6 +26,11 @@ export async function getAllProductsHandler(req: Request, res: Response) {
 }
 export async function updateProductHandler(req: Request, res: Response) {
   try {
+    if (req.body.author != getEmailFromJwt(req)) {
+      return res
+        .status(401)
+        .send('You are not the owner (author) of this product');
+    }
     const ps = new ProductService();
     const product = await ps.updateProduct(req.body);
     if (product === null) {
@@ -31,7 +38,7 @@ export async function updateProductHandler(req: Request, res: Response) {
     }
     return res.status(204).send(product);
   } catch (e: any) {
-    throw new Error(e);
+    res.status(500).send(e?.message);
   }
 }
 export async function deleteProductHandler(req: Request, res: Response) {
@@ -43,7 +50,7 @@ export async function deleteProductHandler(req: Request, res: Response) {
     }
     return res.status(200).send('Product deleted successfully');
   } catch (e: any) {
-    throw new Error(e);
+    res.status(500).send(e?.message);
   }
 }
 export async function getProductsByNamesHandler(req: Request, res: Response) {
@@ -53,6 +60,6 @@ export async function getProductsByNamesHandler(req: Request, res: Response) {
     const products = await ps.getProductsByNames(req.body);
     return res.status(200).send(products);
   } catch (e: any) {
-    throw new Error(e);
+    res.status(500).send(e?.message);
   }
 }

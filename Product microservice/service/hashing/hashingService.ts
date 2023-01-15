@@ -20,7 +20,6 @@ export function hash(object: any, hashOptions?: hashOptions): string {
     const index = Math.floor(Math.random() * pepperChars.length);
     pepper = pepperChars.charAt(index);
   }
-
   const hashedValue = createHash('sha256')
     .update(objectAsString + pepper)
     .digest('hex');

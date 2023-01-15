@@ -16,7 +16,7 @@ export async function RabbitMQConnection() {
   return connection;
 }
 
-export async function onProductUpdated() {
+export async function onProductDeleted() {
   const connection: Connection = await RabbitMQConnection();
   const channel: ConfirmChannel = await connection.createConfirmChannel();
 

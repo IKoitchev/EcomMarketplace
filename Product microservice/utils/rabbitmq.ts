@@ -54,7 +54,7 @@ export async function onProductChange(product: ProductDocument, event: string) {
 
 function getGuid(): string {
   const id = Guid.newGuid().toString();
-  log.info('new guid ' + id);
+  // log.info('new guid ' + id);
   return id;
 }
 

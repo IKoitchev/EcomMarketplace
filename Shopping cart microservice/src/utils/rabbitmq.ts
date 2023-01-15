@@ -5,7 +5,7 @@ import client, {
   ConsumeMessage,
 } from 'amqplib';
 import { ProductDocument } from '../models/product.model';
-import { removeFromCart } from '../service/cartService';
+import { removeFromCart, updateCart } from '../service/cartService';
 import log from './logger';
 require('dotenv').config();
 
@@ -20,7 +20,7 @@ export async function onProductUpdated() {
   const connection: Connection = await RabbitMQConnection();
   const channel: ConfirmChannel = await connection.createConfirmChannel();
 
-  const exchange = 'product-updates';
+  const exchange = 'updated-products';
   channel.assertExchange(exchange, 'fanout', {
     durable: false,
   });
@@ -31,14 +31,17 @@ export async function onProductUpdated() {
 
   channel.consume(
     q.queue,
-    (msg) => {
+    async (msg) => {
       if (msg?.content) {
         const product: ProductDocument = JSON.parse(msg.content.toString());
         log.info(' [x] updated product queue');
+        await updateCart(product);
+
         log.info(product);
+        channel.ack(msg);
       }
     },
-    { noAck: true }
+    { noAck: false }
   );
 }
 
@@ -62,7 +65,7 @@ export async function onProductDeleted() {
         const product: ProductDocument = JSON.parse(msg.content.toString());
         log.info(' [x] deleted product queue');
         let status = 'success';
-        await removeFromCart(product, '')
+        await removeFromCart(product)
           .then(() => {
             log.info(msg.content.toString());
           })
