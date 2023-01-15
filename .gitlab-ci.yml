@@ -1,81 +1,81 @@
 stages:
-  # - build
-  # - test
-  # - dockerbuild
+  - build
+  - test
+  - dockerbuild
   - gkedeploy
 
-# build product service:
-#   stage: build
-#   image: node:16-alpine
-#   script:
-#     - cd ./'Product microservice'
-#     - npm install
-#     - npm run build
-#     - echo "build successful"
-#   artifacts:
-#     paths:
-#       - ./Product microservice/node_modules
+build product service:
+  stage: build
+  image: node:16-alpine
+  script:
+    - cd ./'Product microservice'
+    - npm install
+    - npm run build
+    - echo "build successful"
+  artifacts:
+    paths:
+      - ./Product microservice/node_modules
 
-# build shopping cart service:
-#   stage: build
-#   image: node:16-alpine
-#   script:
-#     - cd ./'Shopping cart microservice'
-#     - npm install
-#     - npm run build
-#     - echo "build successful"
-#   artifacts:
-#     paths:
-#       - ./Shopping cart microservice/node_modules
+build shopping cart service:
+  stage: build
+  image: node:16-alpine
+  script:
+    - cd ./'Shopping cart microservice'
+    - npm install
+    - npm run build
+    - echo "build successful"
+  artifacts:
+    paths:
+      - ./Shopping cart microservice/node_modules
 
-# build image service:
-#   stage: build
-#   image: node:16-alpine
-#   script:
-#     - cd ./'Image microservice'
-#     - npm install
-#     - npm run build
-#     - echo "build successful"
-#   artifacts:
-#     paths:
-#       - ./Image microservice/node_modules
+build image service:
+  stage: build
+  image: node:16-alpine
+  script:
+    - cd ./'Image microservice'
+    - npm install
+    - npm run build
+    - echo "build successful"
+  artifacts:
+    paths:
+      - ./Image microservice/node_modules
 
-# test product service:
-#   stage: test
-#   image: node:16
-#   script:
-#     - cd ./'Product microservice'
-#     - npm test
+test product service:
+  stage: test
+  image: node:16
+  script:
+    - cd ./'Product microservice'
+    - npm test
 
-# test shopping cart service:
-#   stage: test
-#   image: node:16
-#   script:
-#     - cd ./'Shopping cart microservice'
-#     - npm test
+test shopping cart service:
+  stage: test
+  image: node:16
+  script:
+    - cd ./'Shopping cart microservice'
+    - npm test
 
-# test image service:
-#   stage: test
-#   image: node:16
-#   script:
-#     - cd ./'Image microservice'
-#     - npm test
+test image service:
+  stage: test
+  image: node:16
+  script:
+    - cd ./'Image microservice'
+    - npm test
 
-# docker build:
-#   stage: dockerbuild
-#   image: docker:stable
-#   services:
-#     - docker:dind
-#   before_script:
-#     - docker info
-#     - docker login -u $DOCKER_USERNAME -p $DOCKER_ACCESS_KEY
-#   script:
-#     - docker build ./'Product microservice' -t ikoitchev/product-service-k8s
-#     - docker push ikoitchev/product-service-k8s
-#     - docker build ./'Shopping cart microservice' -t ikoitchev/cart-service-k8s
-#     - docker push ikoitchev/cart-service-k8s
-#     - docker build ./'Image microservice' -t ikoitchev/image-service-k8s
-#     - docker push ikoitchev/image-service-k8s
+docker build:
+  stage: dockerbuild
+  image: docker:stable
+  services:
+    - docker:dind
+  before_script:
+    - docker info
+    - docker login -u $DOCKER_USERNAME -p $DOCKER_ACCESS_KEY
+  script:
+    - docker build ./'Product microservice' -t ikoitchev/product-service-k8s
+    - docker push ikoitchev/product-service-k8s
+    - docker build ./'Shopping cart microservice' -t ikoitchev/cart-service-k8s
+    - docker push ikoitchev/cart-service-k8s
+    - docker build ./'Image microservice' -t ikoitchev/image-service-k8s
+    - docker push ikoitchev/image-service-k8s
 
 gcloud deploy:
   stage: gkedeploy
