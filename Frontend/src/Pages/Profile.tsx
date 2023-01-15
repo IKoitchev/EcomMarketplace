@@ -4,13 +4,23 @@ import { useEffect } from 'react';
 import configJson from '../config/auth_config.json';
 
 const Profile: React.FC = () => {
-  const { isAuthenticated, user, getAccessTokenSilently } = useAuth0();
+  const {
+    isAuthenticated,
+    user,
+    getAccessTokenSilently,
+    getAccessTokenWithPopup,
+  } = useAuth0();
   function handleClick() {
-    getAccessTokenSilently({ audience: configJson.audience })
+    getAccessTokenWithPopup({ audience: configJson.audience })
       .then((res) => {
         console.log(res);
       })
       .catch((err) => console.log(err));
+    // getAccessTokenSilently({ audience: configJson.audience })
+    //   .then((res) => {
+    //     console.log(res);
+    //   })
+    //   .catch((err) => console.log(err));
   }
   return (
     <>
