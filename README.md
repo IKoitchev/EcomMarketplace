@@ -1,6 +1,7 @@
 # S-A-RB03 Individual
 
-A repository my individual project
+A repository my individual project. 
+IMPORTANT! The dev branch contains up-to-date code.
 
 ## Structure
 
