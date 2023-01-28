@@ -1,24 +1,47 @@
 import { Express, Request, Response } from 'express';
 import {
-  createProductHandler,
-  deleteProductHandler,
   getAllProductsHandler,
+  createProductHandler,
   updateProductHandler,
+  deleteProductHandler,
 } from '../controllers/product.controller';
-import validate from '../middleware/validate.resource';
+import { checkJwt, checkScopes } from '../middleware/checkjwt';
+import validate from '../middleware/validate.product';
 import { createProductSchema } from '../schema/product.schema';
 
 function productRoutes(app: Express) {
-  app.get('/healthcheck', (req: Request, res: Response) => {
-    res.sendStatus(200);
-  });
   app.get('/products', getAllProductsHandler);
 
-  app.post('/products', validate(createProductSchema), createProductHandler);
+  app.post(
+    '/products', //authenticate
+    [
+      checkJwt,
+      checkScopes(['create:product']), // check permission
+      validate(createProductSchema),
+    ],
+    createProductHandler
+  );
 
-  app.put('/products', validate(createProductSchema), updateProductHandler);
+  app.put(
+    '/products',
+    [
+      checkJwt,
+      checkScopes(['update:current_user_product']),
+      validate(createProductSchema),
+    ],
+    updateProductHandler
+  );
 
-  app.delete('/products', deleteProductHandler);
+  //only admin can delete
+  app.delete(
+    '/products/:productId',
+    [checkJwt, checkScopes(['delete:any_product'])],
+    deleteProductHandler
+  );
+
+  app.get('/', (req: Request, res: Response) => {
+    // GKE health check
+    res.sendStatus(200);
+  });
 }
-
 export default productRoutes;

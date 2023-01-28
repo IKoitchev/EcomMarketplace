@@ -1,0 +1,216 @@
+{
+	"components": {
+		"examples": {},
+		"headers": {},
+		"parameters": {},
+		"requestBodies": {},
+		"responses": {},
+		"schemas": {
+			"FlattenMaps_any_": {
+				"properties": {},
+				"type": "object"
+			},
+			"FlattenMaps_T_": {
+				"properties": {},
+				"type": "object"
+			},
+			"ProductDocument": {
+				"$ref": "#/components/schemas/FlattenMaps_T_"
+			},
+			"DocumentDefinition_ProductDocument_": {
+				"properties": {
+					"description": {
+						"type": "string"
+					},
+					"_id": {
+						"$ref": "#/components/schemas/ProductDocument",
+						"description": "This documents _id."
+					},
+					"__v": {
+						"description": "This documents __v."
+					},
+					"id": {
+						"description": "The string version of this documents _id."
+					},
+					"name": {
+						"type": "string"
+					},
+					"price": {
+						"type": "number",
+						"format": "double"
+					},
+					"image": {
+						"type": "string"
+					},
+					"author": {
+						"type": "string"
+					},
+					"checksum": {
+						"type": "string"
+					}
+				},
+				"required": [
+					"description",
+					"name",
+					"price",
+					"image",
+					"author",
+					"checksum"
+				],
+				"type": "object"
+			},
+			"ObjectId": {
+				"type": "string"
+			}
+		},
+		"securitySchemes": {}
+	},
+	"info": {
+		"title": "s-a-rb03-individual",
+		"version": "1.0.0",
+		"description": "To make it easy for you to get started with GitLab, here's a list of recommended next steps.",
+		"license": {
+			"name": "ISC"
+		},
+		"contact": {}
+	},
+	"openapi": "3.0.0",
+	"paths": {
+		"/products": {
+			"post": {
+				"operationId": "CreateProduct",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/FlattenMaps_any_"
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"products"
+				],
+				"security": [],
+				"parameters": [],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/DocumentDefinition_ProductDocument_"
+							}
+						}
+					}
+				}
+			},
+			"get": {
+				"operationId": "GetAllProducts",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"items": {
+										"$ref": "#/components/schemas/ProductDocument"
+									},
+									"type": "array"
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"products"
+				],
+				"security": [],
+				"parameters": []
+			},
+			"put": {
+				"operationId": "UpdateProduct",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/FlattenMaps_any_"
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"products"
+				],
+				"security": [],
+				"parameters": [],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/DocumentDefinition_ProductDocument_"
+							}
+						}
+					}
+				}
+			}
+		},
+		"/products/{productId}": {
+			"delete": {
+				"operationId": "DeleteProduct",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"allOf": [
+										{
+											"$ref": "#/components/schemas/ProductDocument"
+										},
+										{
+											"properties": {
+												"_id": {
+													"$ref": "#/components/schemas/ObjectId"
+												}
+											},
+											"required": [
+												"_id"
+											],
+											"type": "object"
+										}
+									]
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"products"
+				],
+				"security": [],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "productId",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				]
+			}
+		}
+	},
+	"servers": [
+		{
+			"url": "/"
+		}
+	]
+}

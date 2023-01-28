@@ -1,0 +1,53 @@
+http:
+  port: 8080
+admin:
+  port: 9876
+  host: localhost
+apiEndpoints:
+  products:
+    # host: localhost
+    paths: ['/products']
+  images:
+    # host: localhost
+    paths: ['/images**']
+serviceEndpoints:
+  products:
+    # url: 'product-service://ps:3008' # from inside the docker-compose
+    # url: 'http://localhost:3008' # when ran from vs code
+    url: 'http://35.227.219.118/'
+  images:
+    url:
+      'image-service://imgs:3010' # from inside the docker-compose
+      # url: 'http://localhost:3010' # when ran from vs code
+  shopping-cart:
+    url:
+      'shopping-cart://cart:3009' # from inside the docker-compose
+      # url: 'http://localhost:3009' # when ran from vs code
+policies:
+  - basic-auth
+  - cors
+  - expression
+  - key-auth
+  - log
+  - oauth2
+  - proxy
+  - rate-limit
+pipelines:
+  products:
+    apiEndpoints:
+      - products
+    policies:
+      # Uncomment `key-auth:` when instructed to in the Getting Started guide.
+      # - key-auth:
+      - proxy:
+          - action:
+              serviceEndpoint: products
+              changeOrigin: true
+  images:
+    apiEndpoints:
+      - images
+    policies:
+      - proxy:
+          - action:
+              serviceEndpoint: images
+              changeOrigin: true

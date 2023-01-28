@@ -1,0 +1,50 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: image-service-k8s
+spec:
+  selector:
+    matchLabels:
+      app: image-service-k8s
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: image-service-k8s
+    spec:
+      containers:
+        - name: image-service-k8s
+          image: ikoitchev/image-service-k8s
+          env:
+            - name: AMQP_CONNECTION_STRING
+              valueFrom:
+                secretKeyRef:
+                  name: secret-ecom
+                  key: amqp
+                  optional: false
+            - name: DOMAIN
+              valueFrom:
+                secretKeyRef:
+                  name: secret-ecom
+                  key: auth0-domain
+                  optional: false
+            - name: AUDIENCE
+              valueFrom:
+                secretKeyRef:
+                  name: secret-ecom
+                  key: auth0-audience
+                  optional: false
+          ports:
+            - containerPort: 3010
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: image-service-k8s
+spec:
+  selector:
+    app: image-service-k8s
+  ports:
+    - protocol: TCP
+      port: 3010
+  type: NodePort

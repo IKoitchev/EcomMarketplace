@@ -1,17 +1,15 @@
-import axios from 'axios';
 import { IProduct } from '../interfaces/IProduct';
-
-const api = axios.create({
-  baseURL: 'https://fakestoreapi.com',
-  headers: {
-    'Content-type': 'application/json',
-  },
-});
+import axiosClient from '../utils/axiosClient';
+import { AxiosRequestConfig } from 'axios';
 
 const getAll = () => {
-  return api.get<Array<IProduct>>('/products');
+  return axiosClient.get<Array<IProduct>>('/products');
 };
 
-const ProductService = { getAll };
+const createProduct = (product: IProduct, options: AxiosRequestConfig) => {
+  return axiosClient.post('/products', product, options);
+};
+
+const ProductService = { getAll, createProduct };
 
 export default ProductService;

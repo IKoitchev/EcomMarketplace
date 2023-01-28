@@ -1,0 +1,74 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: cart-service-k8s
+spec:
+  selector:
+    matchLabels:
+      app: cart-service-k8s
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: cart-service-k8s
+    spec:
+      containers:
+        - name: cart-service-k8s
+          image: ikoitchev/cart-service-k8s
+          env:
+            - name: MONGODB_CONNECTION_CART
+              valueFrom:
+                secretKeyRef:
+                  name: secret-ecom
+                  key: mongoDB-shopping-cart
+                  optional: false
+            - name: AMQP_CONNECTION_STRING
+              valueFrom:
+                secretKeyRef:
+                  name: secret-ecom
+                  key: amqp
+                  optional: false
+            - name: DOMAIN
+              valueFrom:
+                secretKeyRef:
+                  name: secret-ecom
+                  key: auth0-domain
+                  optional: false
+            - name: AUDIENCE
+              valueFrom:
+                secretKeyRef:
+                  name: secret-ecom
+                  key: auth0-audience
+                  optional: false
+            - name: REDIS_HOST
+              valueFrom:
+                secretKeyRef:
+                  name: secret-ecom
+                  key: redis-host
+                  optional: false
+            - name: REDIS_PASS
+              valueFrom:
+                secretKeyRef:
+                  name: secret-ecom
+                  key: redis-pass
+                  optional: false
+            - name: PEPPER
+              valueFrom:
+                secretKeyRef:
+                  name: secret-ecom
+                  key: pepper
+                  optional: false
+          ports:
+            - containerPort: 3009
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: cart-service-k8s
+spec:
+  selector:
+    app: cart-service-k8s
+  ports:
+    - protocol: TCP
+      port: 3009
+  type: NodePort

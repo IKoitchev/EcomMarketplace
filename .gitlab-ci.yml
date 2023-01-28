@@ -1,23 +1,91 @@
-image: node:latest
-
 stages:
   - build
   - test
+  - dockerbuild
+  - gkedeploy
 
-build: # This job runs in the build stage, which runs first.
+build product service:
   stage: build
+  image: node:16-alpine
   script:
     - cd ./'Product microservice'
-    - echo "Installing dependancies"
     - npm install
-    - echo "Installation complete"
     - npm run build
     - echo "build successful"
   artifacts:
     paths:
       - ./Product microservice/node_modules
 
-test:
-  stage: test
+build shopping cart service:
+  stage: build
+  image: node:16-alpine
   script:
-    - echo "Test placeholder "
+    - cd ./'Shopping cart microservice'
+    - npm install
+    - npm run build
+    - echo "build successful"
+  artifacts:
+    paths:
+      - ./Shopping cart microservice/node_modules
+
+build image service:
+  stage: build
+  image: node:16-alpine
+  script:
+    - cd ./'Image microservice'
+    - npm install
+    - npm run build
+    - echo "build successful"
+  artifacts:
+    paths:
+      - ./Image microservice/node_modules
+
+test product service:
+  stage: test
+  image: node:16
+  script:
+    - cd ./'Product microservice'
+    - npm test
+
+test shopping cart service:
+  stage: test
+  image: node:16
+  script:
+    - cd ./'Shopping cart microservice'
+    - npm test
+
+test image service:
+  stage: test
+  image: node:16
+  script:
+    - cd ./'Image microservice'
+    - npm test
+
+docker build:
+  stage: dockerbuild
+  image: docker:stable
+  services:
+    - docker:dind
+  before_script:
+    - docker info
+    - docker login -u $DOCKER_USERNAME -p $DOCKER_ACCESS_KEY
+  script:
+    - docker build ./'Product microservice' -t ikoitchev/product-service-k8s
+    - docker push ikoitchev/product-service-k8s
+    - docker build ./'Shopping cart microservice' -t ikoitchev/cart-service-k8s
+    - docker push ikoitchev/cart-service-k8s
+    - docker build ./'Image microservice' -t ikoitchev/image-service-k8s
+    - docker push ikoitchev/image-service-k8s
+
+gcloud deploy:
+  stage: gkedeploy
+  image: google/cloud-sdk:410.0.0
+  script:
+    - cat $SERVICE_ACCOUNT > cred.json
+    - echo cred.json
+    - gcloud auth activate-service-account --key-file=cred.json
+    - gcloud container clusters get-credentials ecom-cluster --region europe-west4 --project burnished-ember-369914
+    - kubectl get namespaces
+    - kubectl apply -f 'Product microservice'/k8s/deployment.yaml
+    - kubectl apply -f 'Shopping cart microservice'/k8s/deployment.yaml
+    - kubectl apply -f 'Image microservice'/k8s/deployment.yaml
