@@ -1,8 +1,22 @@
-# S-A-RB03 Individual
+# Ecom Marketplace
 
-A repository my individual project. 
-IMPORTANT! The dev branch contains up-to-date code.
+A repository for a project I developed during semester 6.
 
-## Structure
+## Contents
 
-The root directory of the repository will contain the all the microservices, as well as the frontend app, all in seperate folders.
+### Backend
+The repository contains 3 microservices - Product, Shopping Cart and Image. 
+The microservices are developed using Express Typescript. 
+
+### Frontend
+The frontend is written in React Typescript. 
+
+### Databases
+The services use cloud hosted MongoDB and Redis databases.
+
+## Note
+This repository is for the purpose of showcasing code only.
+To be ran properly, the services require a .env file containing the database connection strings.
+This file is removed from the repository for security purposes. 
+
+
